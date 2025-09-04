@@ -2099,7 +2099,7 @@ class FafnirBotAPI {
 // Start the API server if run directly
 const isMain = process.argv[1]?.endsWith('api-server.ts') || process.argv[1]?.endsWith('api-server.js');
 if (isMain) {
-  const api = new FafnirBotAPI(3001);
+  const api = new FafnirBotAPI(3000);
   api.start();
 
   // Graceful shutdown

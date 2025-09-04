@@ -14,18 +14,18 @@ services:
       # Enhanced DCA Fibonacci Strategy Configuration
       - STRATEGY=fibonacci
 
-      # DCA Trading Parameters (Conservative & Smart)
+      # DCA Trading Parameters (Aggressive & High Frequency)
       - FIB_DRY_RUN=false                      # 🚀 LIVE TRADING ENABLED
-      - FIB_MIN_PROFIT_BPS=25                  # 25bps min profit (0.25%)
+      - FIB_MIN_PROFIT_BPS=20                  # 20bps min profit (0.2%)
       - FIB_SLIPPAGE_BPS=40                    # 40bps slippage (0.4%)
 
-      # DCA Position Management
+      # DCA Position Management (Aggressive Settings)
       - FIB_MAX_POSITION=100                   # $100 max total GALA position
-      - FIB_TAKE_PROFIT=8                      # 8% take profit target
+      - FIB_TAKE_PROFIT=6                      # 6% take profit target (reduced for faster exits)
       - FIB_STOP_LOSS=15                       # 15% stop loss protection
 
-      # Fibonacci Sequence Base (scales with sequence: 1x, 2x, 3x, 5x, 8x...)
-      - FIB_BASE_TRADE_SIZE=5                  # $5 base order size
+      # Fibonacci Sequence Base (smaller trades = more frequency)
+      - FIB_BASE_TRADE_SIZE=2                  # $2 base order size (was $5)
 
       # Pool Selection (GALA focus for DCA accumulation)
       # Primary: GALA/GUSDC and GUSDC/GALA for DCA trades

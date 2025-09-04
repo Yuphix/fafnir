@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # Enhanced Fafnir Bot
+  fafnir-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.enhanced-trend
+    container_name: fafnir-bot-enhanced
+    environment:
+      # Wallet credentials
+      - GALACHAIN_PRIVATE_KEY=${GALACHAIN_PRIVATE_KEY}
+      - GALACHAIN_WALLET_ADDRESS=${GALACHAIN_WALLET_ADDRESS}
+
+      # Enhanced Trend Strategy Configuration
+      - STRATEGY=enhanced-trend
+
+      # Trading Parameters
+      - TREND_DRY_RUN=false                    # Live trading enabled
+      - TREND_ORDER_SIZE_GUSDC=15              # Start with $15 trades
+      - TREND_BUY_DRAWDOWN_PCT=5               # Buy on -5% drops
+      - TREND_SELL_TP_PCT=8                    # Sell on +8% gains
+      - TREND_STOP_LOSS_PCT=12                 # Emergency exit at -12%
+      - TREND_SLIPPAGE_BPS=100                 # 1% slippage tolerance
+
+      # Risk Management
+      - TREND_MAX_POSITION_GALA=1000           # Max 1000 GALA position
+      - TREND_COOLDOWN_MS=300000               # 5 minute cooldown between trades
+
+      # Price & Timing
+      - TREND_PRICE_SOURCE=hybrid              # GalaSwap + CoinGecko
+      - TREND_POLL_INTERVAL_MS=600000          # Check every 10 minutes
+      - TREND_BACKFILL_HISTORY=true            # Enable historical data
+      - COINGECKO_ID=gala                      # CoinGecko token ID
+
+      # Pool Configuration
+      - TREND_PRIMARY_PAIR=GALA/GUSDC          # Best pool we found
+      - TREND_PREFERRED_FEE_TIERS=500,10000    # Optimal fee tiers
+
+      # Logging & Node.js
+      - TREND_MAX_HISTORY_HOURS=72             # Keep 3 days of price history
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - NODE_ENV=production
+      - NODE_OPTIONS=--max-old-space-size=512
+
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env:ro
+    restart: unless-stopped
+    networks:
+      - fafnir-network
+
+  # API Server
+  fafnir-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: fafnir-bot-api
+    ports:
+      - "3000:3000"  # API server port
+    environment:
+      - NODE_ENV=production
+      - API_PORT=3000
+      - CORS_ORIGIN=https://yuphix.io,http://localhost:8080,http://127.0.0.1:8080
+    volumes:
+      # Persist logs and data
+      - ./logs:/app/logs
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/dashboard"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - fafnir-network
+
+  # Frontend Dashboard
+  fafnir-frontend:
+    image: nginx:alpine
+    container_name: fafnir-frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend-prototype:/usr/share/nginx/html:ro
+    depends_on:
+      - fafnir-api
+    networks:
+      - fafnir-network
+
+networks:
+  fafnir-network:
+    driver: bridge
+
+volumes:
+  fafnir-logs:
+  fafnir-data:

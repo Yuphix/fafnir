@@ -30,7 +30,7 @@ export class FibonacciStrategy implements TradingStrategy {
   private currentIndex = 0;
   private consecutiveWins = 0;
   private consecutiveLosses = 0;
-  private baseTradeSize = 5; // $5 base
+  private baseTradeSize = 2; // $2 base (reduced from $5 for more frequency)
   private minProfitBps: number = Number(process.env.FIB_MIN_PROFIT_BPS || 20);
   private slippageBps: number = Number(process.env.FIB_SLIPPAGE_BPS || 40);
   private dryRun: boolean = String(process.env.FIB_DRY_RUN || 'true').toLowerCase() !== 'false';
@@ -44,9 +44,10 @@ export class FibonacciStrategy implements TradingStrategy {
   private targetToken = 'GALA';
   private stableToken = 'GUSDC';
   private maxPositionSize = Number(process.env.FIB_MAX_POSITION || 100); // $100 max position
-  private takeProfitPercent = Number(process.env.FIB_TAKE_PROFIT || 8); // 8% take profit
+  private takeProfitPercent = Number(process.env.FIB_TAKE_PROFIT || 6); // 6% take profit (reduced from 8%)
   private stopLossPercent = Number(process.env.FIB_STOP_LOSS || 15); // 15% stop loss
-  private buyLevels = [0.618, 0.50, 0.382]; // Fibonacci retracement levels for buying
+  private buyDrawdownPct = Number(process.env.FIB_BUY_DRAWDOWN_PCT || 3); // Buy on -3% 24h drops
+  private buyLevels = [0.236, 0.382, 0.5, 0.618, 0.786]; // More Fibonacci levels for more opportunities
 
   // Multi-Pool GALA Focus
   private galaPools = [
@@ -504,7 +505,7 @@ export class FibonacciStrategy implements TradingStrategy {
       return { success: false, profit: 0, volume: 0, strategy: this.name, pool: 'max-position', timestamp: Date.now() };
     }
 
-    // Check if we're at a Fibonacci support level (good to buy)
+        // Check if we're at a Fibonacci support level (good to buy)
     const fibLevel = this.calculateFibonacciLevel(currentPrice);
     if (fibLevel && fibLevel.isBuyLevel) {
       console.log(`🔢 Fibonacci buy signal at ${(fibLevel.level * 100).toFixed(1)}% retracement level`);
@@ -531,9 +532,9 @@ export class FibonacciStrategy implements TradingStrategy {
       return null; // Need some price history
     }
 
-    // Get recent high and low (last 12 hours)
-    const twelveHoursAgo = Date.now() - (12 * 60 * 60 * 1000);
-    const recentPrices = history.filter(p => p.timestamp >= twelveHoursAgo);
+    // Get recent high and low (last 6 hours - more responsive)
+    const sixHoursAgo = Date.now() - (6 * 60 * 60 * 1000);
+    const recentPrices = history.filter(p => p.timestamp >= sixHoursAgo);
 
     if (recentPrices.length < 3) {
       return null;
@@ -552,7 +553,7 @@ export class FibonacciStrategy implements TradingStrategy {
 
     // Check if we're near a Fibonacci retracement level (buy opportunities)
     for (const buyLevel of this.buyLevels) {
-      if (Math.abs(positionInRange - buyLevel) < 0.05) { // Within 5% of level
+      if (Math.abs(positionInRange - buyLevel) < 0.02) { // Within 2% of level (tighter tolerance)
         return { level: buyLevel, isBuyLevel: true };
       }
     }
@@ -844,6 +845,36 @@ export class FibonacciStrategy implements TradingStrategy {
       return null;
     } catch (error: any) {
       console.log(`⚠️ CoinGecko fetch failed: ${error.message}`);
+      return null;
+    }
+  }
+
+  private async getCoinGeckoData(): Promise<{ price: number; price_change_24h: number } | null> {
+    try {
+      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${this.coinGeckoId}&vs_currencies=usd&include_24hr_change=true`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        signal: AbortSignal.timeout(5000) // 5 second timeout
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data || !data[this.coinGeckoId]) {
+        return null;
+      }
+
+      const priceData = data[this.coinGeckoId];
+      const price = priceData.usd;
+      const priceChange24h = priceData.usd_24h_change || 0;
+
+      return { price, price_change_24h: priceChange24h };
+    } catch (error: any) {
+      console.log(`⚠️ CoinGecko data fetch failed: ${error.message}`);
       return null;
     }
   }
