@@ -1,0 +1,2285 @@
+{
+  "timestamp": "2025-09-02T05:58:00.370Z",
+  "totalTested": 270,
+  "existingPools": 29,
+  "results": [
+    {
+      "pair": "GALA/GUSDC",
+      "tokenA": "GALA",
+      "tokenB": "GUSDC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GUSDC/GALA",
+      "tokenA": "GUSDC",
+      "tokenB": "GALA",
+      "feeTier": 500,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "56.92681839"
+      }
+    },
+    {
+      "pair": "GALA/GUSDC",
+      "tokenA": "GALA",
+      "tokenB": "GUSDC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GUSDC/GALA",
+      "tokenA": "GUSDC",
+      "tokenB": "GALA",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GALA/GUSDC",
+      "tokenA": "GALA",
+      "tokenB": "GUSDC",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.015633"
+      }
+    },
+    {
+      "pair": "GUSDC/GALA",
+      "tokenA": "GUSDC",
+      "tokenB": "GALA",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "62.69410367"
+      }
+    },
+    {
+      "pair": "GALA/GUSDT",
+      "tokenA": "GALA",
+      "tokenB": "GUSDT",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GUSDT$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/GALA",
+      "tokenA": "GUSDT",
+      "tokenB": "GALA",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GUSDT$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GALA/GUSDT",
+      "tokenA": "GALA",
+      "tokenB": "GUSDT",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GUSDT$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/GALA",
+      "tokenA": "GUSDT",
+      "tokenB": "GALA",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GUSDT$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GALA/GUSDT",
+      "tokenA": "GALA",
+      "tokenB": "GUSDT",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.015628"
+      }
+    },
+    {
+      "pair": "GUSDT/GALA",
+      "tokenA": "GUSDT",
+      "tokenB": "GALA",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "62.71038734"
+      }
+    },
+    {
+      "pair": "GALA/GWETH",
+      "tokenA": "GALA",
+      "tokenB": "GWETH",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWETH/GALA",
+      "tokenA": "GWETH",
+      "tokenB": "GALA",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GALA/GWETH",
+      "tokenA": "GALA",
+      "tokenB": "GWETH",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GWETH/GALA",
+      "tokenA": "GWETH",
+      "tokenB": "GALA",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GALA/GWETH",
+      "tokenA": "GALA",
+      "tokenB": "GWETH",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.000003592433152109"
+      }
+    },
+    {
+      "pair": "GWETH/GALA",
+      "tokenA": "GWETH",
+      "tokenB": "GALA",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "237521.26699834"
+      }
+    },
+    {
+      "pair": "GALA/GWBTC",
+      "tokenA": "GALA",
+      "tokenB": "GWBTC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/GALA",
+      "tokenA": "GWBTC",
+      "tokenB": "GALA",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GALA/GWBTC",
+      "tokenA": "GALA",
+      "tokenB": "GWBTC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GWBTC/GALA",
+      "tokenA": "GWBTC",
+      "tokenB": "GALA",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GALA/GWBTC",
+      "tokenA": "GALA",
+      "tokenB": "GWBTC",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "1.3e-7"
+      }
+    },
+    {
+      "pair": "GWBTC/GALA",
+      "tokenA": "GWBTC",
+      "tokenB": "GALA",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "109333.30889572"
+      }
+    },
+    {
+      "pair": "GALA/SILK",
+      "tokenA": "GALA",
+      "tokenB": "SILK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "SILK/GALA",
+      "tokenA": "SILK",
+      "tokenB": "GALA",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GALA/SILK",
+      "tokenA": "GALA",
+      "tokenB": "SILK",
+      "feeTier": 3000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.05816091"
+      }
+    },
+    {
+      "pair": "SILK/GALA",
+      "tokenA": "SILK",
+      "tokenB": "GALA",
+      "feeTier": 3000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "12.85687351"
+      }
+    },
+    {
+      "pair": "GALA/SILK",
+      "tokenA": "GALA",
+      "tokenB": "SILK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "SILK/GALA",
+      "tokenA": "SILK",
+      "tokenB": "GALA",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.02549606"
+      }
+    },
+    {
+      "pair": "GALA/ETIME",
+      "tokenA": "GALA",
+      "tokenB": "ETIME",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "ETIME/GALA",
+      "tokenA": "ETIME",
+      "tokenB": "GALA",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GALA/ETIME",
+      "tokenA": "GALA",
+      "tokenB": "ETIME",
+      "feeTier": 3000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "3.82973204"
+      }
+    },
+    {
+      "pair": "ETIME/GALA",
+      "tokenA": "ETIME",
+      "tokenB": "GALA",
+      "feeTier": 3000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.17186437"
+      }
+    },
+    {
+      "pair": "GALA/ETIME",
+      "tokenA": "GALA",
+      "tokenB": "ETIME",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "3.16626563"
+      }
+    },
+    {
+      "pair": "ETIME/GALA",
+      "tokenA": "ETIME",
+      "tokenB": "GALA",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.29917818"
+      }
+    },
+    {
+      "pair": "GALA/MTRM",
+      "tokenA": "GALA",
+      "tokenB": "MTRM",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GALA",
+      "tokenA": "MTRM",
+      "tokenB": "GALA",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GALA/MTRM",
+      "tokenA": "GALA",
+      "tokenB": "MTRM",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GALA",
+      "tokenA": "MTRM",
+      "tokenB": "GALA",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GALA/MTRM",
+      "tokenA": "GALA",
+      "tokenB": "MTRM",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GALA",
+      "tokenA": "MTRM",
+      "tokenB": "GALA",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GALA/GVBK",
+      "tokenA": "GALA",
+      "tokenB": "GVBK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GVBK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GALA",
+      "tokenA": "GVBK",
+      "tokenB": "GALA",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GVBK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GALA/GVBK",
+      "tokenA": "GALA",
+      "tokenB": "GVBK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GVBK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GALA",
+      "tokenA": "GVBK",
+      "tokenB": "GALA",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GVBK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GALA/GVBK",
+      "tokenA": "GALA",
+      "tokenB": "GVBK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GVBK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GALA",
+      "tokenA": "GVBK",
+      "tokenB": "GALA",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000GVBK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GALA/POWER",
+      "tokenA": "GALA",
+      "tokenB": "POWER",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "POWER/GALA",
+      "tokenA": "POWER",
+      "tokenB": "GALA",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GALA/POWER",
+      "tokenA": "GALA",
+      "tokenB": "POWER",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GALA",
+      "tokenA": "POWER",
+      "tokenB": "GALA",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GALA/POWER",
+      "tokenA": "GALA",
+      "tokenB": "POWER",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GALA",
+      "tokenA": "POWER",
+      "tokenB": "GALA",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GALA$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/GUSDT",
+      "tokenA": "GUSDC",
+      "tokenB": "GUSDT",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GUSDT/GUSDC",
+      "tokenA": "GUSDT",
+      "tokenB": "GUSDC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GUSDC/GUSDT",
+      "tokenA": "GUSDC",
+      "tokenB": "GUSDT",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GUSDT$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/GUSDC",
+      "tokenA": "GUSDT",
+      "tokenB": "GUSDC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GUSDT$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/GUSDT",
+      "tokenA": "GUSDC",
+      "tokenB": "GUSDT",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.989545"
+      }
+    },
+    {
+      "pair": "GUSDT/GUSDC",
+      "tokenA": "GUSDT",
+      "tokenB": "GUSDC",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.989525"
+      }
+    },
+    {
+      "pair": "GUSDC/GWETH",
+      "tokenA": "GUSDC",
+      "tokenB": "GWETH",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GWETH/GUSDC",
+      "tokenA": "GWETH",
+      "tokenB": "GUSDC",
+      "feeTier": 500,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.001948"
+      }
+    },
+    {
+      "pair": "GUSDC/GWETH",
+      "tokenA": "GUSDC",
+      "tokenB": "GWETH",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GWETH$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/GUSDC",
+      "tokenA": "GWETH",
+      "tokenB": "GUSDC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GWETH$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/GWETH",
+      "tokenA": "GUSDC",
+      "tokenB": "GWETH",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.000228508203672903"
+      }
+    },
+    {
+      "pair": "GWETH/GUSDC",
+      "tokenA": "GWETH",
+      "tokenB": "GUSDC",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "4283.970164"
+      }
+    },
+    {
+      "pair": "GUSDC/GWBTC",
+      "tokenA": "GUSDC",
+      "tokenB": "GWBTC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/GUSDC",
+      "tokenA": "GWBTC",
+      "tokenB": "GUSDC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/GWBTC",
+      "tokenA": "GUSDC",
+      "tokenB": "GWBTC",
+      "feeTier": 3000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.00000909"
+      }
+    },
+    {
+      "pair": "GWBTC/GUSDC",
+      "tokenA": "GWBTC",
+      "tokenB": "GUSDC",
+      "feeTier": 3000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "107323.570531"
+      }
+    },
+    {
+      "pair": "GUSDC/GWBTC",
+      "tokenA": "GUSDC",
+      "tokenB": "GWBTC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GWBTC/GUSDC",
+      "tokenA": "GWBTC",
+      "tokenB": "GUSDC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GUSDC/SILK",
+      "tokenA": "GUSDC",
+      "tokenB": "SILK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "SILK/GUSDC",
+      "tokenA": "SILK",
+      "tokenB": "GUSDC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/SILK",
+      "tokenA": "GUSDC",
+      "tokenB": "SILK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "SILK/GUSDC",
+      "tokenA": "SILK",
+      "tokenB": "GUSDC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/SILK",
+      "tokenA": "GUSDC",
+      "tokenB": "SILK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "SILK/GUSDC",
+      "tokenA": "SILK",
+      "tokenB": "GUSDC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GUSDC/ETIME",
+      "tokenA": "GUSDC",
+      "tokenB": "ETIME",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GUSDC",
+      "tokenA": "ETIME",
+      "tokenB": "GUSDC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/ETIME",
+      "tokenA": "GUSDC",
+      "tokenB": "ETIME",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDC$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GUSDC",
+      "tokenA": "ETIME",
+      "tokenB": "GUSDC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDC$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/ETIME",
+      "tokenA": "GUSDC",
+      "tokenB": "ETIME",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDC$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GUSDC",
+      "tokenA": "ETIME",
+      "tokenB": "GUSDC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDC$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/MTRM",
+      "tokenA": "GUSDC",
+      "tokenB": "MTRM",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GUSDC",
+      "tokenA": "MTRM",
+      "tokenB": "GUSDC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/MTRM",
+      "tokenA": "GUSDC",
+      "tokenB": "MTRM",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GUSDC",
+      "tokenA": "MTRM",
+      "tokenB": "GUSDC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/MTRM",
+      "tokenA": "GUSDC",
+      "tokenB": "MTRM",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GUSDC",
+      "tokenA": "MTRM",
+      "tokenB": "GUSDC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/GVBK",
+      "tokenA": "GUSDC",
+      "tokenB": "GVBK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GVBK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GUSDC",
+      "tokenA": "GVBK",
+      "tokenB": "GUSDC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GVBK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/GVBK",
+      "tokenA": "GUSDC",
+      "tokenB": "GVBK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GVBK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GUSDC",
+      "tokenA": "GVBK",
+      "tokenB": "GUSDC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GVBK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/GVBK",
+      "tokenA": "GUSDC",
+      "tokenB": "GVBK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GVBK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GUSDC",
+      "tokenA": "GVBK",
+      "tokenB": "GUSDC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000GVBK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/POWER",
+      "tokenA": "GUSDC",
+      "tokenB": "POWER",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "POWER/GUSDC",
+      "tokenA": "POWER",
+      "tokenB": "GUSDC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/POWER",
+      "tokenA": "GUSDC",
+      "tokenB": "POWER",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GUSDC",
+      "tokenA": "POWER",
+      "tokenB": "GUSDC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDC/POWER",
+      "tokenA": "GUSDC",
+      "tokenB": "POWER",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GUSDC",
+      "tokenA": "POWER",
+      "tokenB": "GUSDC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDC$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/GWETH",
+      "tokenA": "GUSDT",
+      "tokenB": "GWETH",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWETH/GUSDT",
+      "tokenA": "GWETH",
+      "tokenB": "GUSDT",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/GWETH",
+      "tokenA": "GUSDT",
+      "tokenB": "GWETH",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GWETH/GUSDT",
+      "tokenA": "GWETH",
+      "tokenB": "GUSDT",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GUSDT/GWETH",
+      "tokenA": "GUSDT",
+      "tokenB": "GWETH",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.000228485827854524"
+      }
+    },
+    {
+      "pair": "GWETH/GUSDT",
+      "tokenA": "GWETH",
+      "tokenB": "GUSDT",
+      "feeTier": 10000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "4286.279425"
+      }
+    },
+    {
+      "pair": "GUSDT/GWBTC",
+      "tokenA": "GUSDT",
+      "tokenB": "GWBTC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/GUSDT",
+      "tokenA": "GWBTC",
+      "tokenB": "GUSDT",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/GWBTC",
+      "tokenA": "GUSDT",
+      "tokenB": "GWBTC",
+      "feeTier": 3000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.00000909"
+      }
+    },
+    {
+      "pair": "GWBTC/GUSDT",
+      "tokenA": "GWBTC",
+      "tokenB": "GUSDT",
+      "feeTier": 3000,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "107242.530662"
+      }
+    },
+    {
+      "pair": "GUSDT/GWBTC",
+      "tokenA": "GUSDT",
+      "tokenB": "GWBTC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GWBTC/GUSDT",
+      "tokenA": "GWBTC",
+      "tokenB": "GUSDT",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "GUSDT/SILK",
+      "tokenA": "GUSDT",
+      "tokenB": "SILK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "SILK/GUSDT",
+      "tokenA": "SILK",
+      "tokenB": "GUSDT",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/SILK",
+      "tokenA": "GUSDT",
+      "tokenB": "SILK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "SILK/GUSDT",
+      "tokenA": "SILK",
+      "tokenB": "GUSDT",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/SILK",
+      "tokenA": "GUSDT",
+      "tokenB": "SILK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "SILK/GUSDT",
+      "tokenA": "SILK",
+      "tokenB": "GUSDT",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/ETIME",
+      "tokenA": "GUSDT",
+      "tokenB": "ETIME",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDT$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GUSDT",
+      "tokenA": "ETIME",
+      "tokenB": "GUSDT",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDT$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/ETIME",
+      "tokenA": "GUSDT",
+      "tokenB": "ETIME",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDT$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GUSDT",
+      "tokenA": "ETIME",
+      "tokenB": "GUSDT",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDT$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/ETIME",
+      "tokenA": "GUSDT",
+      "tokenB": "ETIME",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDT$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GUSDT",
+      "tokenA": "ETIME",
+      "tokenB": "GUSDT",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GUSDT$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/MTRM",
+      "tokenA": "GUSDT",
+      "tokenB": "MTRM",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GUSDT",
+      "tokenA": "MTRM",
+      "tokenB": "GUSDT",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/MTRM",
+      "tokenA": "GUSDT",
+      "tokenB": "MTRM",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GUSDT",
+      "tokenA": "MTRM",
+      "tokenB": "GUSDT",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/MTRM",
+      "tokenA": "GUSDT",
+      "tokenB": "MTRM",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GUSDT",
+      "tokenA": "MTRM",
+      "tokenB": "GUSDT",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/GVBK",
+      "tokenA": "GUSDT",
+      "tokenB": "GVBK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GVBK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GUSDT",
+      "tokenA": "GVBK",
+      "tokenB": "GUSDT",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GVBK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/GVBK",
+      "tokenA": "GUSDT",
+      "tokenB": "GVBK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GVBK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GUSDT",
+      "tokenA": "GVBK",
+      "tokenB": "GUSDT",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GVBK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/GVBK",
+      "tokenA": "GUSDT",
+      "tokenB": "GVBK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GVBK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GUSDT",
+      "tokenA": "GVBK",
+      "tokenB": "GUSDT",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000GVBK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/POWER",
+      "tokenA": "GUSDT",
+      "tokenB": "POWER",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "POWER/GUSDT",
+      "tokenA": "POWER",
+      "tokenB": "GUSDT",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/POWER",
+      "tokenA": "GUSDT",
+      "tokenB": "POWER",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GUSDT",
+      "tokenA": "POWER",
+      "tokenB": "GUSDT",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GUSDT/POWER",
+      "tokenA": "GUSDT",
+      "tokenB": "POWER",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GUSDT",
+      "tokenA": "POWER",
+      "tokenB": "GUSDT",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GUSDT$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/GWBTC",
+      "tokenA": "GWETH",
+      "tokenB": "GWBTC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/GWETH",
+      "tokenA": "GWBTC",
+      "tokenB": "GWETH",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWETH/GWBTC",
+      "tokenA": "GWETH",
+      "tokenB": "GWBTC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000GWETH$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/GWETH",
+      "tokenA": "GWBTC",
+      "tokenB": "GWETH",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000GWETH$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/GWBTC",
+      "tokenA": "GWETH",
+      "tokenB": "GWBTC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000GWETH$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/GWETH",
+      "tokenA": "GWBTC",
+      "tokenB": "GWETH",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000GWETH$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/SILK",
+      "tokenA": "GWETH",
+      "tokenB": "SILK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "SILK/GWETH",
+      "tokenA": "SILK",
+      "tokenB": "GWETH",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWETH/SILK",
+      "tokenA": "GWETH",
+      "tokenB": "SILK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "SILK/GWETH",
+      "tokenA": "SILK",
+      "tokenB": "GWETH",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/SILK",
+      "tokenA": "GWETH",
+      "tokenB": "SILK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "SILK/GWETH",
+      "tokenA": "SILK",
+      "tokenB": "GWETH",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/ETIME",
+      "tokenA": "GWETH",
+      "tokenB": "ETIME",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GWETH",
+      "tokenA": "ETIME",
+      "tokenB": "GWETH",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWETH/ETIME",
+      "tokenA": "GWETH",
+      "tokenB": "ETIME",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWETH$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GWETH",
+      "tokenA": "ETIME",
+      "tokenB": "GWETH",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWETH$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/ETIME",
+      "tokenA": "GWETH",
+      "tokenB": "ETIME",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWETH$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GWETH",
+      "tokenA": "ETIME",
+      "tokenB": "GWETH",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWETH$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/MTRM",
+      "tokenA": "GWETH",
+      "tokenB": "MTRM",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GWETH",
+      "tokenA": "MTRM",
+      "tokenB": "GWETH",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWETH/MTRM",
+      "tokenA": "GWETH",
+      "tokenB": "MTRM",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GWETH",
+      "tokenA": "MTRM",
+      "tokenB": "GWETH",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/MTRM",
+      "tokenA": "GWETH",
+      "tokenB": "MTRM",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GWETH",
+      "tokenA": "MTRM",
+      "tokenB": "GWETH",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/GVBK",
+      "tokenA": "GWETH",
+      "tokenB": "GVBK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GWETH",
+      "tokenA": "GVBK",
+      "tokenB": "GWETH",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWETH$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWETH/GVBK",
+      "tokenA": "GWETH",
+      "tokenB": "GVBK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWETH$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GWETH",
+      "tokenA": "GVBK",
+      "tokenB": "GWETH",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWETH$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/GVBK",
+      "tokenA": "GWETH",
+      "tokenB": "GVBK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWETH$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GWETH",
+      "tokenA": "GVBK",
+      "tokenB": "GWETH",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWETH$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/POWER",
+      "tokenA": "GWETH",
+      "tokenB": "POWER",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "POWER/GWETH",
+      "tokenA": "POWER",
+      "tokenB": "GWETH",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWETH/POWER",
+      "tokenA": "GWETH",
+      "tokenB": "POWER",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GWETH",
+      "tokenA": "POWER",
+      "tokenB": "GWETH",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWETH/POWER",
+      "tokenA": "GWETH",
+      "tokenB": "POWER",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GWETH",
+      "tokenA": "POWER",
+      "tokenB": "GWETH",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWETH$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/SILK",
+      "tokenA": "GWBTC",
+      "tokenB": "SILK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "SILK/GWBTC",
+      "tokenA": "SILK",
+      "tokenB": "GWBTC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/SILK",
+      "tokenA": "GWBTC",
+      "tokenB": "SILK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "SILK/GWBTC",
+      "tokenA": "SILK",
+      "tokenB": "GWBTC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/SILK",
+      "tokenA": "GWBTC",
+      "tokenB": "SILK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "SILK/GWBTC",
+      "tokenA": "SILK",
+      "tokenB": "GWBTC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/ETIME",
+      "tokenA": "GWBTC",
+      "tokenB": "ETIME",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GWBTC",
+      "tokenA": "ETIME",
+      "tokenB": "GWBTC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/ETIME",
+      "tokenA": "GWBTC",
+      "tokenB": "ETIME",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWBTC$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GWBTC",
+      "tokenA": "ETIME",
+      "tokenB": "GWBTC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWBTC$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/ETIME",
+      "tokenA": "GWBTC",
+      "tokenB": "ETIME",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWBTC$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GWBTC",
+      "tokenA": "ETIME",
+      "tokenB": "GWBTC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GWBTC$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/MTRM",
+      "tokenA": "GWBTC",
+      "tokenB": "MTRM",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GWBTC",
+      "tokenA": "MTRM",
+      "tokenB": "GWBTC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/MTRM",
+      "tokenA": "GWBTC",
+      "tokenB": "MTRM",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GWBTC",
+      "tokenA": "MTRM",
+      "tokenB": "GWBTC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/MTRM",
+      "tokenA": "GWBTC",
+      "tokenB": "MTRM",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GWBTC",
+      "tokenA": "MTRM",
+      "tokenB": "GWBTC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/GVBK",
+      "tokenA": "GWBTC",
+      "tokenB": "GVBK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GWBTC",
+      "tokenA": "GVBK",
+      "tokenB": "GWBTC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWBTC$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/GVBK",
+      "tokenA": "GWBTC",
+      "tokenB": "GVBK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWBTC$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GWBTC",
+      "tokenA": "GVBK",
+      "tokenB": "GWBTC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWBTC$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/GVBK",
+      "tokenA": "GWBTC",
+      "tokenB": "GVBK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWBTC$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/GWBTC",
+      "tokenA": "GVBK",
+      "tokenB": "GWBTC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000GWBTC$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/POWER",
+      "tokenA": "GWBTC",
+      "tokenB": "POWER",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "POWER/GWBTC",
+      "tokenA": "POWER",
+      "tokenB": "GWBTC",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/POWER",
+      "tokenA": "GWBTC",
+      "tokenB": "POWER",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GWBTC",
+      "tokenA": "POWER",
+      "tokenB": "GWBTC",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GWBTC/POWER",
+      "tokenA": "GWBTC",
+      "tokenB": "POWER",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GWBTC",
+      "tokenA": "POWER",
+      "tokenB": "GWBTC",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GWBTC$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "SILK/ETIME",
+      "tokenA": "SILK",
+      "tokenB": "ETIME",
+      "feeTier": 500,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "0.37356242"
+      }
+    },
+    {
+      "pair": "ETIME/SILK",
+      "tokenA": "ETIME",
+      "tokenB": "SILK",
+      "feeTier": 500,
+      "exists": true,
+      "quoteResult": {
+        "amountIn": "1",
+        "amountOut": "2.67167643"
+      }
+    },
+    {
+      "pair": "SILK/ETIME",
+      "tokenA": "SILK",
+      "tokenB": "ETIME",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "ETIME/SILK",
+      "tokenA": "ETIME",
+      "tokenB": "SILK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "SILK/ETIME",
+      "tokenA": "SILK",
+      "tokenB": "ETIME",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "ETIME/SILK",
+      "tokenA": "ETIME",
+      "tokenB": "SILK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error CONFLICT from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: Not enough liquidity available in pool"
+    },
+    {
+      "pair": "SILK/MTRM",
+      "tokenA": "SILK",
+      "tokenB": "MTRM",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "MTRM/SILK",
+      "tokenA": "MTRM",
+      "tokenB": "SILK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "SILK/MTRM",
+      "tokenA": "SILK",
+      "tokenB": "MTRM",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/SILK",
+      "tokenA": "MTRM",
+      "tokenB": "SILK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "SILK/MTRM",
+      "tokenA": "SILK",
+      "tokenB": "MTRM",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/SILK",
+      "tokenA": "MTRM",
+      "tokenB": "SILK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "SILK/GVBK",
+      "tokenA": "SILK",
+      "tokenB": "GVBK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GVBK/SILK",
+      "tokenA": "GVBK",
+      "tokenB": "SILK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "SILK/GVBK",
+      "tokenA": "SILK",
+      "tokenB": "GVBK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/SILK",
+      "tokenA": "GVBK",
+      "tokenB": "SILK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "SILK/GVBK",
+      "tokenA": "SILK",
+      "tokenB": "GVBK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/SILK",
+      "tokenA": "GVBK",
+      "tokenB": "SILK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "SILK/POWER",
+      "tokenA": "SILK",
+      "tokenB": "POWER",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000POWER$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "POWER/SILK",
+      "tokenA": "POWER",
+      "tokenB": "SILK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000POWER$Unit$none$none\u0000SILK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "SILK/POWER",
+      "tokenA": "SILK",
+      "tokenB": "POWER",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000POWER$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "POWER/SILK",
+      "tokenA": "POWER",
+      "tokenB": "SILK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000POWER$Unit$none$none\u0000SILK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "SILK/POWER",
+      "tokenA": "SILK",
+      "tokenB": "POWER",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000POWER$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "POWER/SILK",
+      "tokenA": "POWER",
+      "tokenB": "SILK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000POWER$Unit$none$none\u0000SILK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/MTRM",
+      "tokenA": "ETIME",
+      "tokenB": "MTRM",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "MTRM/ETIME",
+      "tokenA": "MTRM",
+      "tokenB": "ETIME",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "ETIME/MTRM",
+      "tokenA": "ETIME",
+      "tokenB": "MTRM",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/ETIME",
+      "tokenA": "MTRM",
+      "tokenB": "ETIME",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/MTRM",
+      "tokenA": "ETIME",
+      "tokenB": "MTRM",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/ETIME",
+      "tokenA": "MTRM",
+      "tokenB": "ETIME",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GVBK",
+      "tokenA": "ETIME",
+      "tokenB": "GVBK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GVBK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GVBK/ETIME",
+      "tokenA": "GVBK",
+      "tokenB": "ETIME",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GVBK$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GVBK",
+      "tokenA": "ETIME",
+      "tokenB": "GVBK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GVBK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/ETIME",
+      "tokenA": "GVBK",
+      "tokenB": "ETIME",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GVBK$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/GVBK",
+      "tokenA": "ETIME",
+      "tokenB": "GVBK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GVBK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/ETIME",
+      "tokenA": "GVBK",
+      "tokenB": "ETIME",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000GVBK$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/POWER",
+      "tokenA": "ETIME",
+      "tokenB": "POWER",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "POWER/ETIME",
+      "tokenA": "POWER",
+      "tokenB": "ETIME",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "ETIME/POWER",
+      "tokenA": "ETIME",
+      "tokenB": "POWER",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "POWER/ETIME",
+      "tokenA": "POWER",
+      "tokenB": "ETIME",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "ETIME/POWER",
+      "tokenA": "ETIME",
+      "tokenB": "POWER",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "POWER/ETIME",
+      "tokenA": "POWER",
+      "tokenB": "ETIME",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000ETIME$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GVBK",
+      "tokenA": "MTRM",
+      "tokenB": "GVBK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GVBK/MTRM",
+      "tokenA": "GVBK",
+      "tokenB": "MTRM",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000MTRM$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GVBK",
+      "tokenA": "MTRM",
+      "tokenB": "GVBK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/MTRM",
+      "tokenA": "GVBK",
+      "tokenB": "MTRM",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000MTRM$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/GVBK",
+      "tokenA": "MTRM",
+      "tokenB": "GVBK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/MTRM",
+      "tokenA": "GVBK",
+      "tokenB": "MTRM",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000MTRM$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/POWER",
+      "tokenA": "MTRM",
+      "tokenB": "POWER",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "POWER/MTRM",
+      "tokenA": "POWER",
+      "tokenB": "MTRM",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "MTRM/POWER",
+      "tokenA": "MTRM",
+      "tokenB": "POWER",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "POWER/MTRM",
+      "tokenA": "POWER",
+      "tokenB": "MTRM",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "MTRM/POWER",
+      "tokenA": "MTRM",
+      "tokenB": "POWER",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "POWER/MTRM",
+      "tokenA": "POWER",
+      "tokenB": "MTRM",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000MTRM$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/POWER",
+      "tokenA": "GVBK",
+      "tokenB": "POWER",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "POWER/GVBK",
+      "tokenA": "POWER",
+      "tokenB": "GVBK",
+      "feeTier": 500,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000POWER$Unit$none$none\u0000500\u0000 exists"
+    },
+    {
+      "pair": "GVBK/POWER",
+      "tokenA": "GVBK",
+      "tokenB": "POWER",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GVBK",
+      "tokenA": "POWER",
+      "tokenB": "GVBK",
+      "feeTier": 3000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000POWER$Unit$none$none\u00003000\u0000 exists"
+    },
+    {
+      "pair": "GVBK/POWER",
+      "tokenA": "GVBK",
+      "tokenB": "POWER",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    },
+    {
+      "pair": "POWER/GVBK",
+      "tokenA": "POWER",
+      "tokenB": "GVBK",
+      "feeTier": 10000,
+      "exists": false,
+      "error": "GalaChain Error OBJECT_NOT_FOUND from https://gateway-mainnet.galachain.com/api/asset/dexv3-contract/QuoteExactAmount: No object with id \u0000GCDXCHLPL\u0000GVBK$Unit$none$none\u0000POWER$Unit$none$none\u000010000\u0000 exists"
+    }
+  ],
+  "existingPoolsSummary": [
+    "ETIME/GALA (10000bps)",
+    "ETIME/GALA (3000bps)",
+    "ETIME/SILK (500bps)",
+    "GALA/ETIME (10000bps)",
+    "GALA/ETIME (3000bps)",
+    "GALA/GUSDC (10000bps)",
+    "GALA/GUSDT (10000bps)",
+    "GALA/GWBTC (10000bps)",
+    "GALA/GWETH (10000bps)",
+    "GALA/SILK (3000bps)",
+    "GUSDC/GALA (10000bps)",
+    "GUSDC/GALA (500bps)",
+    "GUSDC/GUSDT (10000bps)",
+    "GUSDC/GWBTC (3000bps)",
+    "GUSDC/GWETH (10000bps)",
+    "GUSDT/GALA (10000bps)",
+    "GUSDT/GUSDC (10000bps)",
+    "GUSDT/GWBTC (3000bps)",
+    "GUSDT/GWETH (10000bps)",
+    "GWBTC/GALA (10000bps)",
+    "GWBTC/GUSDC (3000bps)",
+    "GWBTC/GUSDT (3000bps)",
+    "GWETH/GALA (10000bps)",
+    "GWETH/GUSDC (10000bps)",
+    "GWETH/GUSDC (500bps)",
+    "GWETH/GUSDT (10000bps)",
+    "SILK/ETIME (500bps)",
+    "SILK/GALA (10000bps)",
+    "SILK/GALA (3000bps)"
+  ]
+}

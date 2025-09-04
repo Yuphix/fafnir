@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  fafnir-bot:
+    build: .
+    container_name: fafnir-bot
+    restart: unless-stopped
+    environment:
+      # Production wallet credentials
+      - GALACHAIN_PRIVATE_KEY=${GALACHAIN_PRIVATE_KEY}
+      - GALACHAIN_WALLET_ADDRESS=${GALACHAIN_WALLET_ADDRESS}
+
+      # Trading configuration
+      - SLIPPAGE_BPS=${SLIPPAGE_BPS:-100}
+      - FORCE_DRYRUN=${FORCE_DRYRUN:-0}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      # Strategy selection and advisor
+      - STRATEGY_ROTATION_MODE=${STRATEGY_ROTATION_MODE:-score}
+      - FORCE_STRATEGY=liquidity-spider
+      - ADVISOR_ENABLED=${ADVISOR_ENABLED:-false}
+      - ADVISOR_INTERVAL_MS=${ADVISOR_INTERVAL_MS:-600000}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      # Triangular strategy params
+      - TRIANGULAR_DRY_RUN=${TRIANGULAR_DRY_RUN:-false}
+      - TRIANGULAR_MIN_PROFIT_BPS=${TRIANGULAR_MIN_PROFIT_BPS:-20}
+      - TRIANGULAR_SLIPPAGE_BPS=${TRIANGULAR_SLIPPAGE_BPS:-40}
+      # Dashboard toggle
+      - DASHBOARD_ENABLED=${DASHBOARD_ENABLED:-false}
+      # Trend strategy (GUSDC<->GALA)
+      - TREND_DRY_RUN=${TREND_DRY_RUN:-true}
+      - TREND_ORDER_SIZE_GUSDC=${TREND_ORDER_SIZE_GUSDC:-20}
+      - TREND_BUY_DRAWDOWN_PCT=${TREND_BUY_DRAWDOWN_PCT:-5}
+      - TREND_SELL_TP1_PCT=${TREND_SELL_TP1_PCT:-8}
+      - TREND_SELL_TP2_PCT=${TREND_SELL_TP2_PCT:-10}
+      - TREND_POLL_INTERVAL_MS=${TREND_POLL_INTERVAL_MS:-3600000}
+      - TREND_SLIPPAGE_BPS=${TREND_SLIPPAGE_BPS:-80}
+      - TREND_PRICE_SOURCE=${TREND_PRICE_SOURCE:-coingecko}
+      - COINGECKO_ID=${COINGECKO_ID:-gala}
+      - COINGECKO_VS=${COINGECKO_VS:-usd}
+      - ADVISOR_ENABLED=${ADVISOR_ENABLED:-false}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-1.5-pro}
+      - ADVISOR_MIN_CONFIDENCE=${ADVISOR_MIN_CONFIDENCE:-0.6}
+
+      # Node.js optimization
+      - NODE_ENV=production
+      - NODE_OPTIONS=--max-old-space-size=512
+    volumes:
+      # Persist logs across container restarts
+      - ./logs:/app/logs
+      # Mount config for easy updates
+      - ./config.json:/app/config.json:ro
+    networks:
+      - fafnir-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('Bot is running')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Optional: Add monitoring service later
+  # fafnir-monitor:
+  #   image: nginx:alpine
+  #   container_name: fafnir-monitor
+  #   ports:
+  #     - "3000:80"
+  #   volumes:
+  #     - ./logs:/usr/share/nginx/html/logs:ro
+  #   depends_on:
+  #     - fafnir-bot
+  #   networks:
+  #     - fafnir-network
+
+networks:
+  fafnir-network:
+    driver: bridge
+
+volumes:
+  fafnir-logs:
+    driver: local

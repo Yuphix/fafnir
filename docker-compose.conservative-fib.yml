@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  fafnir-bot-cfib:
+    build:
+      context: .
+      dockerfile: Dockerfile.conservative-fib
+    container_name: fafnir-bot-conservative-fib
+    environment:
+      # ✅ SAME WALLET CREDENTIALS AS YOUR WORKING CONFIG
+      - GALACHAIN_PRIVATE_KEY=${GALACHAIN_PRIVATE_KEY}
+      - GALACHAIN_WALLET_ADDRESS=${GALACHAIN_WALLET_ADDRESS}
+
+      # Conservative Fibonacci Strategy Configuration
+      - STRATEGY=conservative-fibonacci
+
+            # Conservative Trading Parameters (Small & Safe)
+      - CFIB_DRY_RUN=false                     # 🚀 LIVE TRADING ENABLED
+      - CFIB_MIN_PROFIT_BPS=30                 # 30bps min profit (0.3%)
+      - CFIB_SLIPPAGE_BPS=50                   # 50bps slippage (0.5%)
+
+      # Risk Management (Very Conservative)
+      - CFIB_MAX_DAILY_TRADES=12               # Max 12 trades per day
+      - CFIB_COOLDOWN_MS=300000                # 5 minutes between trades (for testing)
+      - CFIB_MAX_DAILY_LOSS=25                 # $25 max daily loss limit
+
+      # Pool Selection (Complementary to Trend Bot)
+      # Trend bot uses GALA/GUSDC, so we use:
+      # - GUSDC/GUSDT (stablecoin arbitrage - stable profits)
+      # - GALA/GUSDT (alternative GALA pair)
+      # - GALA/GWETH (GALA/ETH pair - better value than ETIME)
+
+      # Performance & Monitoring
+      - CFIB_POLL_INTERVAL_MS=1800000          # Check every 30 minutes (vs Trend's 10min)
+
+      # Logging & Node.js (same as your working config)
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - NODE_ENV=production
+      - NODE_OPTIONS=--max-old-space-size=512
+
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env:ro
+    restart: unless-stopped
+    networks:
+      - fafnir-network
+
+networks:
+  fafnir-network:
+    driver: bridge

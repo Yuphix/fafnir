@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  fafnir-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: fafnir-bot-api
+    ports:
+      - "3000:3000"  # API server port
+    environment:
+      - NODE_ENV=production
+      - API_PORT=3000
+      - CORS_ORIGIN=https://yuphix.io,http://localhost:8080,http://127.0.0.1:8080
+    volumes:
+      # Persist logs and data
+      - ./logs:/app/logs
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/dashboard"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - fafnir-network
+
+  # Optional: Simple frontend server for testing
+  fafnir-frontend:
+    image: nginx:alpine
+    container_name: fafnir-frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend-prototype:/usr/share/nginx/html:ro
+    depends_on:
+      - fafnir-api
+    networks:
+      - fafnir-network
+
+networks:
+  fafnir-network:
+    driver: bridge
+
+volumes:
+  fafnir-logs:
+  fafnir-data:

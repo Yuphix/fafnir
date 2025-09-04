@@ -1,0 +1,129 @@
+{
+  "pollSeconds": 60,
+  "risk": "cautious",
+  "thresholdBps": 120,
+  "pairs": [
+    { "symbolIn": "GUSDC", "symbolOut": "GALA", "amountIn": "10" },
+    { "symbolIn": "GALA", "symbolOut": "GUSDC", "amountIn": "1000" },
+    { "symbolIn": "GUSDT", "symbolOut": "GALA", "amountIn": "10" },
+    { "symbolIn": "GALA", "symbolOut": "GUSDT", "amountIn": "1000" },
+    { "symbolIn": "GUSDC", "symbolOut": "GWETH", "amountIn": "15" },
+    { "symbolIn": "GWETH", "symbolOut": "GUSDC", "amountIn": "0.005" },
+    { "symbolIn": "GUSDC", "symbolOut": "GWBTC", "amountIn": "15" },
+    { "symbolIn": "GWBTC", "symbolOut": "GUSDC", "amountIn": "0.001" },
+
+    { "symbolIn": "ETIME", "symbolOut": "GALA", "amountIn": "100" },
+    { "symbolIn": "GALA", "symbolOut": "ETIME", "amountIn": "100" },
+
+    { "symbolIn": "GUSDC", "symbolOut": "GUSDT", "amountIn": "10" },
+    { "symbolIn": "GUSDT", "symbolOut": "GUSDC", "amountIn": "10" },
+    { "symbolIn": "GALA", "symbolOut": "GWETH", "amountIn": "1000" },
+    { "symbolIn": "GWETH", "symbolOut": "GALA", "amountIn": "0.001" }
+  ],
+  "poolConfigurations": {
+    "GUSDC/GALA": {
+      "tokenA": "GUSDC",
+      "tokenB": "GALA",
+      "minTradeSize": 5,
+      "maxTradeSize": 100,
+      "targetProfitability": 1.015,
+      "priority": "HIGH",
+      "enabledStrategies": ["arbitrage", "fibonacci", "trend", "triangular", "liquidity-spider"]
+    },
+    "GALA/GUSDT": {
+      "tokenA": "GALA",
+      "tokenB": "GUSDT",
+      "minTradeSize": 100,
+      "maxTradeSize": 1000,
+      "targetProfitability": 1.015,
+      "priority": "HIGH",
+      "enabledStrategies": ["liquidity-spider"]
+    },
+    "GUSDC/GUSDT": {
+      "tokenA": "GUSDC",
+      "tokenB": "GUSDT",
+      "minTradeSize": 5,
+      "maxTradeSize": 100,
+      "targetProfitability": 1.005,
+      "priority": "HIGH",
+      "enabledStrategies": ["liquidity-spider"]
+    },
+    "GALA/GWETH": {
+      "tokenA": "GALA",
+      "tokenB": "GWETH",
+      "minTradeSize": 100,
+      "maxTradeSize": 1000,
+      "targetProfitability": 1.02,
+      "priority": "MEDIUM",
+      "enabledStrategies": ["liquidity-spider"]
+    },
+    "GUSDC/GWETH": {
+      "tokenA": "GUSDC",
+      "tokenB": "GWETH",
+      "minTradeSize": 10,
+      "maxTradeSize": 50,
+      "targetProfitability": 1.015,
+      "priority": "HIGH",
+      "enabledStrategies": ["arbitrage", "liquidity-spider"]
+    },
+    "GUSDC/GWBTC": {
+      "tokenA": "GUSDC",
+      "tokenB": "GWBTC",
+      "minTradeSize": 10,
+      "maxTradeSize": 25,
+      "targetProfitability": 1.02,
+      "priority": "MEDIUM",
+      "enabledStrategies": ["arbitrage"]
+    },
+
+    "ETIME/GALA": {
+      "tokenA": "ETIME",
+      "tokenB": "GALA",
+      "minTradeSize": 100,
+      "maxTradeSize": 500,
+      "targetProfitability": 1.035,
+      "priority": "LOW",
+      "enabledStrategies": ["liquidity-spider"]
+    }
+  },
+  "strategySettings": {
+    "defaultStrategy": "liquidity-spider",
+    "strategySwitchInterval": 300000,
+    "performanceTracking": true,
+    "competitionDetection": true
+  },
+  "milestoneSettings": {
+    "enabled": false,
+    "milestones": [
+      { "trades": 5, "reward": 20, "completed": false },
+      { "trades": 10, "reward": 30, "completed": false },
+      { "trades": 25, "reward": 50, "completed": false },
+      { "trades": 50, "reward": 100, "completed": false },
+      { "trades": 100, "reward": 200, "completed": false }
+    ],
+    "volumeTarget": 1500
+  },
+  "competitionSettings": {
+    "detectionEnabled": true,
+    "avoidanceEnabled": true,
+    "randomDelayRange": [2000, 7000],
+    "oddAmounts": true
+  },
+  "riskManagement": {
+    "maxDailyLoss": 50,
+    "maxPositionSize": 100,
+    "maxPortfolioExposure": 500,
+    "maxSlippage": 300,
+    "maxConcurrentTrades": 3,
+    "stopLossThreshold": 10,
+    "dailyVolumeLimit": 1000,
+    "maxDrawdown": 20
+  },
+  "performanceOptimization": {
+    "cacheExpiration": 30000,
+    "concurrentQuotes": 5,
+    "dynamicSlippage": true,
+    "mevProtection": true,
+    "adaptiveFeeTiers": true
+  }
+}

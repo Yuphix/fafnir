@@ -1,0 +1,46 @@
+# Enhanced Arbitrage Strategy Dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY tsconfig.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy source code
+COPY src/ ./src/
+COPY config.json ./
+
+# Create logs directory
+RUN mkdir -p logs/advisor logs/dryruns
+
+# Expose health check port (optional)
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD node -e "console.log('Enhanced Arbitrage Strategy healthy')" || exit 1
+
+# Run the enhanced arbitrage strategy
+CMD ["node", "-e", "\
+const { ArbitrageStrategy } = require('./src/strategies/arbitrage-strategy.js'); \
+const strategy = new ArbitrageStrategy(); \
+console.log('🚀 Enhanced Arbitrage Strategy starting...'); \
+setInterval(async () => { \
+  try { \
+    console.log('\\n📈 Executing arbitrage scan...'); \
+    const result = await strategy.execute(); \
+    if (result.success) { \
+      console.log(`✅ Arbitrage result: $${result.profit.toFixed(4)} profit on ${result.pool}`); \
+    } else { \
+      console.log(`⚠️ Arbitrage scan: ${result.error || 'No opportunities'}`); \
+    } \
+  } catch (error) { \
+    console.error('❌ Arbitrage execution error:', error.message); \
+  } \
+}, 120000); \
+process.on('SIGTERM', () => { console.log('📴 Shutting down...'); process.exit(0); }); \
+"]

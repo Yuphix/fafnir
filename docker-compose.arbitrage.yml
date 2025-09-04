@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  fafnir-arbitrage:
+    build:
+      context: .
+      dockerfile: Dockerfile.arbitrage
+    container_name: fafnir-bot-arbitrage
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env:ro
+    environment:
+      - NODE_ENV=production
+      # Arbitrage Strategy Settings
+      - ARB_DRY_RUN=false
+      - ARB_MIN_PROFIT_BPS=50          # 0.5% minimum profit threshold
+      - ARB_SLIPPAGE_BPS=100           # 1.0% slippage tolerance
+      - ARB_MAX_CONCURRENT=2           # Max 2 concurrent arbitrage trades
+      - ARB_USE_ADVISOR=true           # Enable AI advisor
+      - ARB_ADVISOR_INTERVAL_MS=300000 # Consult advisor every 5 minutes
+
+      # GalaChain Connection
+      - GALACHAIN_PRIVATE_KEY=${GALACHAIN_PRIVATE_KEY}
+      - GALACHAIN_WALLET_ADDRESS=${GALACHAIN_WALLET_ADDRESS}
+
+      # AI Advisor (Gemini) - Optional
+      - ADVISOR_ENABLED=true
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ADVISOR_INTERVAL_MS=300000
+
+      # Risk Management
+      - RISK_MAX_DAILY_LOSS=50         # $50 max daily loss
+      - RISK_MAX_POSITION_SIZE=100     # $100 max position
+      - RISK_MAX_SLIPPAGE_BPS=200      # 2% max slippage
+
+    restart: unless-stopped
+    networks:
+      - fafnir-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('Arbitrage strategy healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  fafnir-network:
+    driver: bridge

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fafnir Bot - Trading Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🐉 Fafnir Trading Bot</h1>
+                <div class="connection-status" id="connectionStatus">
+                    <span class="status-indicator offline" id="statusIndicator"></span>
+                    <span id="statusText">Disconnected</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Wallet Connection Section -->
+        <section class="wallet-section">
+            <div class="card">
+                <h2>💼 Wallet Connection</h2>
+                <div class="wallet-buttons">
+                    <button class="btn btn-primary" id="connectMetaMask">
+                        🦊 Connect MetaMask
+                    </button>
+                    <button class="btn btn-secondary" id="connectGalaChain">
+                        ⚡ Connect GalaChain
+                    </button>
+                </div>
+                <div class="wallet-info" id="walletInfo" style="display: none;">
+                    <div class="address-display">
+                        <div class="address-item">
+                            <label>Ethereum Address:</label>
+                            <span id="ethAddress">-</span>
+                        </div>
+                        <div class="address-item">
+                            <label>GalaChain Address:</label>
+                            <span id="galaAddress">-</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" id="disconnectWallet">Disconnect</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trading Status -->
+        <section class="status-section">
+            <div class="status-grid">
+                <div class="status-card">
+                    <h3>🤖 Bot Status</h3>
+                    <div class="status-value" id="botStatus">Checking...</div>
+                </div>
+                <div class="status-card">
+                    <h3>📊 Active Strategy</h3>
+                    <div class="status-value" id="activeStrategy">None</div>
+                </div>
+                <div class="status-card">
+                    <h3>💰 Balance</h3>
+                    <div class="status-value" id="balance">$0.00</div>
+                </div>
+                <div class="status-card">
+                    <h3>📈 24h P&L</h3>
+                    <div class="status-value" id="pnl">+$0.00</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategy Controls -->
+        <section class="strategy-section">
+            <div class="card">
+                <h2>⚙️ Strategy Controls</h2>
+                <div class="strategy-controls">
+                    <div class="strategy-selector">
+                        <label for="strategySelect">Select Strategy:</label>
+                        <select id="strategySelect" class="form-select">
+                            <option value="">Loading strategies...</option>
+                        </select>
+                    </div>
+                    <div class="strategy-buttons">
+                        <button class="btn btn-success" id="startStrategy">▶️ Start</button>
+                        <button class="btn btn-warning" id="stopStrategy">⏹️ Stop</button>
+                        <button class="btn btn-info" id="refreshStatus">🔄 Refresh</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trading Configuration -->
+        <section class="config-section">
+            <div class="card">
+                <h2>🎛️ Trading Configuration</h2>
+                <div class="config-grid">
+                    <div class="config-item">
+                        <label for="minSwap">Min Swap Amount ($):</label>
+                        <input type="number" id="minSwap" class="form-input" min="1" value="5">
+                    </div>
+                    <div class="config-item">
+                        <label for="maxSwap">Max Swap Amount ($):</label>
+                        <input type="number" id="maxSwap" class="form-input" min="1" value="100">
+                    </div>
+                    <div class="config-item">
+                        <label for="profitThreshold">Profit Threshold (%):</label>
+                        <input type="number" id="profitThreshold" class="form-input" min="0.1" step="0.1" value="2.0">
+                    </div>
+                    <div class="config-item">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="aiAdvisor">
+                            <span class="checkmark"></span>
+                            Enable AI Advisor
+                        </label>
+                    </div>
+                </div>
+                <div class="config-buttons">
+                    <button class="btn btn-primary" id="saveConfig">💾 Save Configuration</button>
+                    <button class="btn btn-secondary" id="resetConfig">🔄 Reset to Default</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Logs -->
+        <section class="logs-section">
+            <div class="card">
+                <h2>📝 Live Logs</h2>
+                <div class="logs-container">
+                    <div class="logs-header">
+                        <button class="btn btn-small" id="clearLogs">🗑️ Clear</button>
+                        <button class="btn btn-small" id="exportLogs">📥 Export</button>
+                    </div>
+                    <div class="logs-content" id="logsContent">
+                        <div class="log-entry">
+                            <span class="log-time">--:--:--</span>
+                            <span class="log-message">Connecting to Fafnir Bot API...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="actions-section">
+            <div class="card">
+                <h2>⚡ Quick Actions</h2>
+                <div class="action-buttons">
+                    <button class="btn btn-info" id="testConnection">🔌 Test API Connection</button>
+                    <button class="btn btn-info" id="viewBalances">💰 View Balances</button>
+                    <button class="btn btn-info" id="viewTrades">📊 Recent Trades</button>
+                    <button class="btn btn-warning" id="emergencyStop">🚨 Emergency Stop</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Status Modal -->
+    <div class="modal" id="statusModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Status</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

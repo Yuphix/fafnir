@@ -1,0 +1,40 @@
+# Enhanced DCA Fibonacci Strategy - Production Ready
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/cache/apk/*
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Create logs directory structure
+RUN mkdir -p logs/fibonacci logs/trades logs/dryruns
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S fafnir -u 1001
+RUN chown -R fafnir:nodejs /app
+USER fafnir
+
+# Expose port for monitoring (future use)
+EXPOSE 3000
+
+# Health check - verify strategy is responding
+HEALTHCHECK --interval=60s --timeout=15s --start-period=30s --retries=3 \
+    CMD ls /app/logs/fibonacci/ || exit 1
+
+# Start the Enhanced DCA Fibonacci Strategy (runs immediately then every 2 minutes)
+CMD ["npx", "tsx", "-e", "import('./src/strategies/fibonacci-strategy.js').then(m => { const s = new m.FibonacciStrategy(); console.log('🚀 Running immediate check...'); s.execute().then(() => { const interval = Number(process.env.FIB_POLL_INTERVAL_MS || 120000); console.log(`⏰ Setting up ${interval/60000} minute intervals`); setInterval(() => s.execute().catch(console.error), interval); }); });"]

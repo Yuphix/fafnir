@@ -1,0 +1,67 @@
+{
+  "minSwapAmount": 5,
+  "maxSwapAmount": 100,
+  "profitThreshold": 25,
+  "slippageTolerance": 100,
+  "maxDailyLoss": 50,
+  "maxPositionSize": 100,
+  "dryRun": true,
+  "useAdvisor": false,
+  "fibonacci": {
+    "baseTradeSize": 5,
+    "maxPositionSize": 100,
+    "takeProfitPercent": 8,
+    "stopLossPercent": 15,
+    "buyLevels": [
+      0.618,
+      0.5,
+      0.382
+    ],
+    "galaPools": [
+      "GALA/GUSDC",
+      "GALA/GUSDT",
+      "GALA/GWETH",
+      "GALA/GWBTC"
+    ],
+    "pollIntervalMs": 600000
+  },
+  "arbitrage": {
+    "minProfitBps": 50,
+    "maxConcurrentTrades": 2,
+    "advisorIntervalMs": 300000,
+    "arbitragePools": [
+      "GALA/GUSDC",
+      "GALA/GUSDT",
+      "GUSDC/GUSDT",
+      "GALA/GWETH",
+      "GUSDC/GWETH"
+    ],
+    "baseAmount": 10
+  },
+  "liquiditySpider": {
+    "maxPositions": 8,
+    "basePositionSize": 5,
+    "profitTarget": 200,
+    "stopLoss": 100,
+    "scanInterval": 30000,
+    "advisorInterval": 120000,
+    "useCrossDexOpportunities": true,
+    "poolTargets": [
+      "GALA/GUSDC",
+      "GALA/GUSDT",
+      "GALA/GWETH",
+      "GUSDC/GUSDT",
+      "GUSDC/GWETH"
+    ]
+  },
+  "enhancedTrend": {
+    "orderSizeGusdc": 10,
+    "priceSource": "hybrid",
+    "coinGeckoId": "gala",
+    "backfillHistory": true,
+    "trendPairs": [
+      "GALA/GUSDC",
+      "GALA/GUSDT"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  fafnir-bot-fibonacci:
+    build:
+      context: .
+      dockerfile: Dockerfile.fibonacci
+    container_name: fafnir-bot-fibonacci
+    environment:
+      # ✅ SAME WALLET CREDENTIALS AS YOUR WORKING CONFIG
+      - GALACHAIN_PRIVATE_KEY=${GALACHAIN_PRIVATE_KEY}
+      - GALACHAIN_WALLET_ADDRESS=${GALACHAIN_WALLET_ADDRESS}
+
+      # Enhanced DCA Fibonacci Strategy Configuration
+      - STRATEGY=fibonacci
+
+      # DCA Trading Parameters (Conservative & Smart)
+      - FIB_DRY_RUN=false                      # 🚀 LIVE TRADING ENABLED
+      - FIB_MIN_PROFIT_BPS=25                  # 25bps min profit (0.25%)
+      - FIB_SLIPPAGE_BPS=40                    # 40bps slippage (0.4%)
+
+      # DCA Position Management
+      - FIB_MAX_POSITION=100                   # $100 max total GALA position
+      - FIB_TAKE_PROFIT=8                      # 8% take profit target
+      - FIB_STOP_LOSS=15                       # 15% stop loss protection
+
+      # Fibonacci Sequence Base (scales with sequence: 1x, 2x, 3x, 5x, 8x...)
+      - FIB_BASE_TRADE_SIZE=5                  # $5 base order size
+
+      # Pool Selection (GALA focus for DCA accumulation)
+      # Primary: GALA/GUSDC and GUSDC/GALA for DCA trades
+
+      # Performance & Monitoring
+      - FIB_POLL_INTERVAL_MS=120000            # Check every 2 minutes for testing
+
+      # Logging & Node.js (same as your working config)
+      - NODE_ENV=production
+      - NODE_OPTIONS=--max-old-space-size=4096
+
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env:ro
+
+    restart: unless-stopped
+
+    # Health check - verify strategy is responding
+    healthcheck:
+      test: ["CMD", "ls", "/app/logs/fibonacci-positions.json"]
+      interval: 60s
+      timeout: 15s
+      start_period: 30s
+      retries: 3
+
+networks:
+  default:
+    name: fafnir-network

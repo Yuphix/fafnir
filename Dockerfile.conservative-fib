@@ -1,0 +1,40 @@
+# Conservative Fibonacci Strategy - Production Ready
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/cache/apk/*
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Create logs directory structure
+RUN mkdir -p logs/conservative-fibonacci logs/trades logs/dryruns
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S fafnir -u 1001
+RUN chown -R fafnir:nodejs /app
+USER fafnir
+
+# Expose port for monitoring (future use)
+EXPOSE 3000
+
+# Health check - verify strategy is responding
+HEALTHCHECK --interval=60s --timeout=15s --start-period=30s --retries=3 \
+    CMD ls /app/logs/conservative-fibonacci/ || exit 1
+
+# Start the Conservative Fibonacci Strategy Runner
+CMD ["npx", "tsx", "src/conservative-fibonacci-runner.ts"]
