@@ -7,8 +7,8 @@ class FafnirBotUI {
     constructor() {
         // Load configuration
         this.config = window.FAFNIR_CONFIG || {};
-        this.apiBase = this.config.API?.BASE_URL || 'http://localhost:3001/api';
-        this.wsUrl = this.config.API?.WS_URL || 'ws://localhost:3001';
+        this.apiBase = this.config.API?.BASE_URL || 'http://localhost:3000/api';
+        this.wsUrl = this.config.API?.WS_URL || 'ws://localhost:3000';
         this.ws = null;
         this.isConnected = false;
         this.currentWallet = null;
