@@ -3,6 +3,9 @@ import rateLimit from 'express-rate-limit';
 import { ipKeyGenerator } from 'express-rate-limit';
 import { Request, Response, NextFunction } from 'express';
 
+import fs from 'fs-extra';
+import path from 'path';
+
 /**
  * Security Manager for Fafnir Bot API
  * Provides authentication, authorization, and rate limiting
@@ -274,13 +277,11 @@ export class SecurityManager {
 
     console.log(`🔍 AUDIT: ${action} by ${logEntry.user}`, details);
 
-    // Save to audit log file
-    const fs = require('fs-extra');
-    const path = require('path');
-    const auditLogPath = path.join(process.cwd(), 'logs', 'audit.log');
+  // Save to audit log file
+  const auditLogPath = path.join(process.cwd(), 'logs', 'audit.log');
 
-    fs.ensureDirSync(path.dirname(auditLogPath));
-    fs.appendFileSync(auditLogPath, JSON.stringify(logEntry) + '\n');
+  fs.ensureDirSync(path.dirname(auditLogPath));
+  fs.appendFileSync(auditLogPath, JSON.stringify(logEntry) + '\n');
   }
 
   // Validate configuration changes

@@ -80,7 +80,9 @@ export class EnhancedTrendStrategy {
   private lastTradeTime: number = 0;
   private logDir: string;
 
-  constructor(config?: Partial<TrendConfig>) {
+  constructor(config?: Partial<TrendConfig>, walletAddress?: string) {
+    // Use provided wallet address if available, else fallback to env var
+    const wallet = walletAddress || process.env.GALACHAIN_WALLET_ADDRESS || '';
         this.config = {
       primaryPair: 'GALA/GUSDC',
       fallbackPair: 'GALA/GUSDT',
@@ -351,7 +353,7 @@ export class EnhancedTrendStrategy {
         try {
           return await this.getGalaSwapPrice();
         } catch (error) {
-          this.log(`⚠️ GalaSwap price failed, using CoinGecko: ${error.message}`);
+          this.log(`⚠️ GalaSwap price failed, using CoinGecko: ${(error as Error).message}`);
           return await this.getCoinGeckoPrice();
         }
     }
@@ -731,4 +733,4 @@ async function main() {
 main().catch(console.error);
 
 // Export for use in other modules
-export { TrendConfig, PriceSample, TradeEntry };
+export type { TrendConfig, PriceSample, TradeEntry };

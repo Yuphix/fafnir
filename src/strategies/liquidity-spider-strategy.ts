@@ -40,6 +40,7 @@ interface SpiderPosition {
 }
 
 export class LiquiditySpiderStrategy implements TradingStrategy {
+  private wallet: string | undefined;
   name = 'liquidity-spider';
   minVolumeRequired = 1; // Very low minimum for micro opportunities
   maxRisk = 0.3; // Conservative risk per position
@@ -64,7 +65,8 @@ export class LiquiditySpiderStrategy implements TradingStrategy {
   private useCrossDexOpportunities: boolean;
   private dryRun: boolean;
 
-  constructor() {
+  constructor(walletAddress?: string) {
+    this.wallet = walletAddress || process.env.GALACHAIN_WALLET_ADDRESS || process.env.GSWAP_WALLET || process.env.GSWAP_WALLET_ADDRESS;
     // Initialize GSwap client
     const gatewayUrl = process.env.GSWAP_GATEWAY_URL || 'https://gateway-mainnet.galachain.com';
     const dexBackendUrl = process.env.GSWAP_DEX_BACKEND_URL || 'https://dex-backend-prod1.defi.gala.com';

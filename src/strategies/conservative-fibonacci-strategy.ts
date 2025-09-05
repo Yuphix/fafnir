@@ -22,6 +22,7 @@ import { createPerformanceOptimizer } from '../performance-optimizer.js';
  * - Smart cooldown management
  */
 export class ConservativeFibonacciStrategy implements TradingStrategy {
+  private wallet: string;
   name = 'conservative-fibonacci';
   minVolumeRequired = 5;
   maxRisk = 0.25; // Lower risk than original (0.4)
@@ -42,7 +43,6 @@ export class ConservativeFibonacciStrategy implements TradingStrategy {
   private minProfitBps = Number(process.env.CFIB_MIN_PROFIT_BPS || 30); // 30bps vs 20bps
   private slippageBps = Number(process.env.CFIB_SLIPPAGE_BPS || 50); // 50bps vs 40bps
   private dryRun = String(process.env.CFIB_DRY_RUN || 'false').toLowerCase() === 'true';
-  private wallet = process.env.GALACHAIN_WALLET_ADDRESS || '';
 
   // Risk management
   private maxDailyTrades = Number(process.env.CFIB_MAX_DAILY_TRADES || 12);
@@ -55,7 +55,8 @@ export class ConservativeFibonacciStrategy implements TradingStrategy {
   private dailyProfit = 0;
   private tradingDay = new Date().getDate();
 
-  constructor() {
+  constructor(walletAddress?: string) {
+  this.wallet = walletAddress || process.env.GALACHAIN_WALLET_ADDRESS || '';
     const gatewayUrl = process.env.GSWAP_GATEWAY_URL || 'https://gateway-mainnet.galachain.com';
     const dexBackendUrl = process.env.GSWAP_DEX_BACKEND_URL || 'https://dex-backend-prod1.defi.gala.com';
     const bundlerUrl = process.env.GSWAP_BUNDLER_URL || 'https://bundle-backend-prod1.defi.gala.com';

@@ -1,3 +1,4 @@
+
 version: '3.8'
 
 services:
@@ -12,8 +13,11 @@ services:
       - NODE_ENV=production
       - API_PORT=3000
       - CORS_ORIGIN=https://yuphix.io,http://localhost:8080,http://127.0.0.1:8080
+      - API_KEYS=fafnir_7e2c4b1a8d9f6e3b5c0f8a7d2e4c6b1f9a2d3e4c8b1a7d9f6e3b5c0f8a7d2e4c6
+      - MIN_SWAP_AMOUNT=5
+      - MAX_SWAP_AMOUNT=25
+      - PROFIT_THRESHOLD=2
     volumes:
-      # Persist logs and data
       - ./logs:/app/logs
       - ./data:/app/data
     restart: unless-stopped
@@ -26,7 +30,6 @@ services:
     networks:
       - fafnir-network
 
-  # Optional: Simple frontend server for testing
   fafnir-frontend:
     image: nginx:alpine
     container_name: fafnir-frontend

@@ -209,7 +209,14 @@ class FafnirBotAPI {
     this.app.post('/api/strategies/:strategyId/start', securityManager.authenticateApiKey, securityManager.requireAdmin, async (req: Request, res: Response) => {
       try {
         const { strategyId } = req.params;
-        const result = await this.startStrategy(strategyId);
+        const { walletAddress } = req.body;
+
+        // Validate wallet address format
+        if (walletAddress && !/^eth\|[0-9a-fA-F]{40}$/.test(walletAddress)) {
+          return this.sendError(res, 'Wallet address must be in format eth|<EthereumAddress>', 400);
+        }
+
+        const result = await this.startStrategy(strategyId, walletAddress);
         this.sendResponse(res, result);
 
         // Broadcast strategy change to WebSocket clients
@@ -1221,7 +1228,7 @@ class FafnirBotAPI {
   }
 
   // Strategy control methods
-  private async startStrategy(strategyId: string): Promise<any> {
+  private async startStrategy(strategyId: string, walletAddress?: string): Promise<any> {
     const strategies = await this.getAvailableStrategies();
     const strategy = strategies.find(s => s.id === strategyId);
 
@@ -1233,12 +1240,19 @@ class FafnirBotAPI {
       throw new Error(`Strategy '${strategyId}' is not deployable via Docker`);
     }
 
+    // Prepare env vars
+    const env = { ...process.env };
+    if (walletAddress) {
+      env.GALACHAIN_WALLET_ADDRESS = walletAddress;
+    }
+
     return new Promise((resolve, reject) => {
       console.log(`🚀 Starting strategy: ${strategy.name}`);
 
             const dockerProcess = spawn('docker-compose', ['-f', strategy.dockerCompose, 'up', '-d', '--build'], {
         cwd: process.cwd(),
-        stdio: ['pipe', 'pipe', 'pipe']
+        stdio: ['pipe', 'pipe', 'pipe'],
+        env
       });
 
       let output = '';

@@ -88,6 +88,11 @@ const LEDGER_FILE = path.join(LOG_DIR, 'trend_ledger.json');
 fs.ensureDirSync(LOG_DIR);
 
 // Config via env
+let WALLET_ADDRESS: string | undefined;
+function setWalletAddress(addr?: string) {
+  WALLET_ADDRESS = addr || process.env.GALACHAIN_WALLET_ADDRESS || '';
+}
+// Usage: setWalletAddress(walletAddressFromApi)
 const POLL_INTERVAL_MS = Number(process.env.TREND_POLL_INTERVAL_MS || 60 * 60 * 1000); // hourly default
 const BUY_DRAWDOWN_PCT = Number(process.env.TREND_BUY_DRAWDOWN_PCT || 5); // buy if -5% over 24h
 const SELL_TP1_PCT = Number(process.env.TREND_SELL_TP1_PCT || 8); // sell if +8% from entry

@@ -34,7 +34,7 @@ export class FibonacciStrategy implements TradingStrategy {
   private minProfitBps: number = Number(process.env.FIB_MIN_PROFIT_BPS || 20);
   private slippageBps: number = Number(process.env.FIB_SLIPPAGE_BPS || 40);
   private dryRun: boolean = String(process.env.FIB_DRY_RUN || 'true').toLowerCase() !== 'false';
-  private wallet: string | undefined = process.env.GALACHAIN_WALLET_ADDRESS || process.env.GSWAP_WALLET || process.env.GSWAP_WALLET_ADDRESS;
+  private wallet: string | undefined;
   private swapAuth: GalaChainSwapAuth;
 
   // DCA Position Management
@@ -59,7 +59,10 @@ export class FibonacciStrategy implements TradingStrategy {
 
   private coinGeckoId = 'gala'; // For external price reference
 
-  constructor() {
+  constructor(walletAddress?: string) {
+    // Use provided wallet address if available, else fallback to env var
+    this.wallet = walletAddress || process.env.GALACHAIN_WALLET_ADDRESS || process.env.GSWAP_WALLET || process.env.GSWAP_WALLET_ADDRESS;
+
     // Initialize GSwap client for building swap payloads
     const gatewayUrl = process.env.GSWAP_GATEWAY_URL || 'https://gateway-mainnet.galachain.com';
     const dexBackendUrl = process.env.GSWAP_DEX_BACKEND_URL || 'https://dex-backend-prod1.defi.gala.com';

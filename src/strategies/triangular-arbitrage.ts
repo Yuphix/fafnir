@@ -23,7 +23,8 @@ export class TriangularArbitrage implements TradingStrategy {
     ['GUSDT', 'GALA', 'GUSDC', 'GUSDT'],  // Path 3 (reverse)
   ];
 
-  constructor() {
+  constructor(walletAddress?: string) {
+    this.wallet = walletAddress || process.env.GALACHAIN_WALLET_ADDRESS || process.env.GSWAP_WALLET || process.env.GSWAP_WALLET_ADDRESS;
     // Initialize GSwap client for building swap payloads
     const gatewayUrl = process.env.GSWAP_GATEWAY_URL || 'https://gateway-mainnet.galachain.com';
     const dexBackendUrl = process.env.GSWAP_DEX_BACKEND_URL || 'https://dex-backend-prod1.defi.gala.com';
