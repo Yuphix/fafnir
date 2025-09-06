@@ -43,7 +43,31 @@ export class SecurityManager {
 
   // Load API keys from environment
   private loadApiKeys(): string[] {
-    const keys = process.env.API_KEYS?.split(',') || [];
+    // Support single user key via FAFNIR_USER_API_KEY
+    const keys = [];
+    if (process.env.FAFNIR_USER_API_KEY) {
+      keys.push(process.env.FAFNIR_USER_API_KEY);
+    }
+    if (process.env.API_KEYS) {
+      keys.push(...process.env.API_KEYS.split(','));
+    }
+    // Try to load from config.json if env vars are not set
+    if (keys.length === 0) {
+      try {
+        const configPath = path.join(process.cwd(), 'config.json');
+        if (fs.existsSync(configPath)) {
+          const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+          if (config.userApiKey) {
+            keys.push(config.userApiKey);
+          }
+          if (config.apiKeys && Array.isArray(config.apiKeys)) {
+            keys.push(...config.apiKeys);
+          }
+        }
+      } catch (err) {
+        console.warn('⚠️  Could not load user API key from config.json:', err);
+      }
+    }
     if (keys.length === 0) {
       const defaultKey = this.generateApiKey();
       console.warn('⚠️  No API keys configured. Generated default key:', defaultKey);
@@ -54,7 +78,31 @@ export class SecurityManager {
 
   // Load admin API keys from environment
   private loadAdminApiKeys(): string[] {
-    const adminKeys = process.env.ADMIN_API_KEYS?.split(',') || [];
+    // Support single admin key via FAFNIR_ADMIN_API_KEY
+    const adminKeys = [];
+    if (process.env.FAFNIR_ADMIN_API_KEY) {
+      adminKeys.push(process.env.FAFNIR_ADMIN_API_KEY);
+    }
+    if (process.env.ADMIN_API_KEYS) {
+      adminKeys.push(...process.env.ADMIN_API_KEYS.split(','));
+    }
+    // Try to load from config.json if env vars are not set
+    if (adminKeys.length === 0) {
+      try {
+        const configPath = path.join(process.cwd(), 'config.json');
+        if (fs.existsSync(configPath)) {
+          const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+          if (config.adminApiKey) {
+            adminKeys.push(config.adminApiKey);
+          }
+          if (config.adminApiKeys && Array.isArray(config.adminApiKeys)) {
+            adminKeys.push(...config.adminApiKeys);
+          }
+        }
+      } catch (err) {
+        console.warn('⚠️  Could not load admin API key from config.json:', err);
+      }
+    }
     if (adminKeys.length === 0) {
       const defaultAdminKey = this.generateApiKey();
       console.warn('⚠️  No admin API keys configured. Generated default admin key:', defaultAdminKey);

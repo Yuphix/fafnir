@@ -124,6 +124,38 @@ class FafnirBotAPI {
   }
 
   private setupRoutes() {
+    // Token approval endpoint
+    this.app.post('/api/wallet/approve', async (req: Request, res: Response) => {
+      try {
+        const { message, signature } = req.body;
+        if (!message || !signature) {
+          return this.sendError(res, 'Approval message and signature required', 400);
+        }
+        // Basic validation: check message structure
+        if (typeof message !== 'object' || !message.type || !message.token || !message.spender || !message.owner || !message.amount || !message.timestamp || !message.nonce) {
+          return this.sendError(res, 'Invalid approval message format', 400);
+        }
+        // Verify signature (example for Ethereum)
+        let valid = false;
+        try {
+          const recovered = ethers.utils.verifyMessage(JSON.stringify(message), signature);
+          valid = recovered.toLowerCase() === message.owner.replace('eth|', '').toLowerCase();
+        } catch (e) {
+          return this.sendError(res, 'Signature verification failed', 400);
+        }
+        if (!valid) {
+          return this.sendError(res, 'Signature does not match owner', 401);
+        }
+        // TODO: Store or process approval for swaps as needed
+        this.sendResponse(res, {
+          success: true,
+          message: 'Token approval received and verified',
+          approval: { message, signature }
+        });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
     // Health check
     this.app.get('/health', (req, res) => {
       res.json({
@@ -1249,7 +1281,7 @@ class FafnirBotAPI {
     return new Promise((resolve, reject) => {
       console.log(`🚀 Starting strategy: ${strategy.name}`);
 
-            const dockerProcess = spawn('docker-compose', ['-f', strategy.dockerCompose, 'up', '-d', '--build'], {
+            const dockerProcess = spawn('docker', ['compose', '-f', strategy.dockerCompose, 'up', '-d', '--build'], {
         cwd: process.cwd(),
         stdio: ['pipe', 'pipe', 'pipe'],
         env
@@ -1304,7 +1336,7 @@ class FafnirBotAPI {
     return new Promise((resolve, reject) => {
       console.log(`🛑 Stopping strategy: ${strategy.name}`);
 
-            const dockerProcess = spawn('docker-compose', ['-f', strategy.dockerCompose, 'down'], {
+            const dockerProcess = spawn('docker', ['compose', '-f', strategy.dockerCompose, 'down'], {
         cwd: process.cwd(),
         stdio: ['pipe', 'pipe', 'pipe']
       });
