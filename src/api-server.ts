@@ -372,8 +372,8 @@ class FafnirBotAPI {
       try {
         const allWalletOracles = this.storyGenerator.getAllWalletOracles();
         const walletOraclesArray = Array.from(allWalletOracles.entries()).map(([address, state]) => ({
-          walletAddress: address,
-          ...state
+          ...state,
+          walletAddress: address // Override with the key address to ensure consistency
         }));
         this.sendResponse(res, { walletOracles: walletOraclesArray });
       } catch (error: any) {
