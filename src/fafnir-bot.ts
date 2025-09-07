@@ -13,7 +13,6 @@ const TOKENS: Record<string, string> = {
   GWBTC: 'GWBTC|Unit|none|none',
   GUSDT: 'GUSDT|Unit|none|none',
   SILK: 'SILK|Unit|none|none',
-  ETIME: 'ETIME|Unit|none|none',
   MTRM: 'MTRM|Unit|none|none'
 };
 const FEE_TIERS = [500, 3000, 10000]; // 0.05%, 0.3%, 1.0%

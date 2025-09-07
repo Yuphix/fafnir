@@ -23,7 +23,6 @@ const TOKENS: Record<string, string> = {
   GWBTC: 'GWBTC|Unit|none|none',
   GUSDT: 'GUSDT|Unit|none|none',
   SILK: 'SILK|Unit|none|none',
-  ETIME: 'ETIME|Unit|none|none',
   MTRM: 'MTRM|Unit|none|none'
 };
 

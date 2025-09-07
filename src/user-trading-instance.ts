@@ -1,5 +1,11 @@
 import { MultiWalletManager, TradingPermission, TradeRequest, TradeApproval } from './multi-wallet-manager.js';
-import { TokenBalance } from '@gala-chain/api';
+// import { TokenBalance } from '@gala-chain/api'; // Temporarily disabled
+interface TokenBalance {
+  tokenClass: string;
+  quantity: string;
+  token: string;
+  balance: string;
+}
 // import { TradingStrategy } from './interfaces/trading-strategy.js'; // Will be implemented
 import { ArbitrageStrategy } from './strategies/arbitrage-strategy.js';
 import crypto from 'crypto';

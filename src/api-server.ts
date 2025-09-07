@@ -8,6 +8,7 @@ import { spawn } from 'child_process';
 import { configManager, TradingConfig } from './config-manager.js';
 import { securityManager } from './security-manager.js';
 import { MultiWalletManager } from './multi-wallet-manager-simple.js';
+import { MultiUserStrategyManager } from './multi-user-strategy-manager.js';
 import { ethers } from 'ethers';
 import crypto from 'crypto';
 
@@ -84,6 +85,7 @@ class FafnirBotAPI {
   private wss: WebSocketServer;
   private port: number;
   private multiWalletManager: MultiWalletManager;
+  private multiUserStrategyManager: MultiUserStrategyManager;
   private addressMappings: Map<string, string> = new Map(); // ethereum -> galachain
 
   // File paths
@@ -97,12 +99,18 @@ class FafnirBotAPI {
     this.server = http.createServer(this.app);
     this.wss = new WebSocketServer({ server: this.server });
     this.multiWalletManager = new MultiWalletManager();
+    this.multiUserStrategyManager = new MultiUserStrategyManager();
 
     // Load existing address mappings
     this.loadAddressMappings();
 
     // Connect multi-wallet manager to API server for real-time notifications
     this.multiWalletManager.setApiServerBroadcast(this.broadcastTradeApprovalRequest.bind(this));
+
+    // Connect multi-user strategy manager for real-time updates
+    this.multiUserStrategyManager.setBroadcastCallback((update) => {
+      this.broadcastStrategyUpdate.call(this, update);
+    });
 
     this.setupMiddleware();
     this.setupRoutes();
@@ -233,6 +241,189 @@ class FafnirBotAPI {
         const strategies = await this.getAvailableStrategies();
         this.sendResponse(res, strategies);
       } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    // Multi-user strategy endpoints
+    this.app.post('/api/strategies/assign', async (req: Request, res: Response) => {
+      try {
+        const { walletAddress, strategy, config } = req.body;
+
+        if (!walletAddress || !strategy) {
+          return this.sendError(res, 'Wallet address and strategy required', 400);
+        }
+
+        // Assign strategy using multi-user manager (INSTANT!)
+        const session = await this.multiUserStrategyManager.assignStrategy({
+          walletAddress,
+          strategy,
+          config
+        });
+
+        this.sendResponse(res, {
+          sessionId: session.sessionId,
+          walletAddress: session.walletAddress,
+          strategy: session.selectedStrategy,
+          status: 'active',
+          config: session.config
+        });
+
+      } catch (error: any) {
+        console.error('Strategy assignment error:', error);
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.post('/api/strategies/:address/control', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const { action, strategy, config } = req.body;
+
+        let result: any = { success: false };
+
+        switch (action) {
+          case 'start':
+            if (!strategy) {
+              return this.sendError(res, 'Strategy required for start action', 400);
+            }
+            const session = await this.multiUserStrategyManager.assignStrategy({
+              walletAddress: address,
+              strategy,
+              config
+            });
+            result = { success: true, sessionId: session.sessionId };
+            break;
+
+          case 'stop':
+            const stopped = await this.multiUserStrategyManager.stopUserStrategy(address);
+            result = { success: stopped };
+            break;
+
+          default:
+            return this.sendError(res, 'Invalid action', 400);
+        }
+
+        this.sendResponse(res, {
+          ...result,
+          walletAddress: address,
+          action
+        });
+
+      } catch (error: any) {
+        console.error('Strategy control error:', error);
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.get('/api/strategies/:address/status', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const session = this.multiUserStrategyManager.getUserStatus(address);
+
+        if (!session) {
+          return this.sendResponse(res, {
+            hasActiveStrategy: false,
+            walletAddress: address
+          });
+        }
+
+        this.sendResponse(res, {
+          hasActiveStrategy: true,
+          walletAddress: address,
+          strategy: session.selectedStrategy,
+          isActive: session.isActive,
+          sessionId: session.sessionId,
+          startTime: session.startTime,
+          lastActivity: session.lastActivity,
+          lastTradeTime: session.lastTradeTime,
+          config: session.config,
+          performance: session.performance
+        });
+
+      } catch (error: any) {
+        console.error('Strategy status error:', error);
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.put('/api/strategies/:address/config', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const config = req.body;
+
+        const updated = await this.multiUserStrategyManager.updateUserConfig(address, config);
+
+        if (!updated) {
+          return this.sendError(res, 'User session not found', 404);
+        }
+
+        this.sendResponse(res, {
+          walletAddress: address,
+          updatedConfig: config
+        });
+
+      } catch (error: any) {
+        console.error('Update config error:', error);
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.get('/api/performance/:address', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const session = this.multiUserStrategyManager.getUserStatus(address);
+
+        if (!session) {
+          return this.sendError(res, 'User session not found', 404);
+        }
+
+        this.sendResponse(res, {
+          walletAddress: address,
+          strategy: session.selectedStrategy,
+          performance: session.performance,
+          sessionInfo: {
+            startTime: session.startTime,
+            lastActivity: session.lastActivity,
+            lastTradeTime: session.lastTradeTime,
+            sessionId: session.sessionId
+          }
+        });
+
+      } catch (error: any) {
+        console.error('Get performance error:', error);
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.get('/api/trades/:address', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const limit = parseInt(req.query.limit as string) || 50;
+
+        // Read user's trade log file
+        const logDir = path.join(process.cwd(), 'logs', 'multi-user');
+        const tradeFile = path.join(logDir, `trades-${address}.log`);
+
+        if (!await fs.pathExists(tradeFile)) {
+          return this.sendResponse(res, { trades: [], totalTrades: 0 });
+        }
+
+        const logContent = await fs.readFile(tradeFile, 'utf8');
+        const trades = logContent
+          .split('\n')
+          .filter(Boolean)
+          .slice(-limit)
+          .map(line => JSON.parse(line));
+
+        this.sendResponse(res, {
+          trades,
+          totalTrades: trades.length,
+          walletAddress: address
+        });
+
+      } catch (error: any) {
+        console.error('Get trades error:', error);
         this.sendError(res, error.message, 500);
       }
     });
@@ -1974,6 +2165,21 @@ class FafnirBotAPI {
     } else {
       console.log(`⚠️  No active WebSocket connection for ${walletAddress}`);
     }
+  }
+
+  // Broadcast strategy updates to all connected clients
+  private broadcastStrategyUpdate(update: any): void {
+    const message = {
+      type: 'strategy_update',
+      ...update,
+      timestamp: new Date().toISOString()
+    };
+
+    this.wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(message));
+      }
+    });
   }
 
   // Storage for approval subscriptions

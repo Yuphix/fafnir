@@ -16,7 +16,6 @@ const TOKENS: Record<string, string> = {
   WETH: 'WETH|Unit|none|none',
   USDC: 'USDC|Unit|none|none',
   SILK: 'SILK|Unit|none|none',
-  ETIME: 'ETIME|Unit|none|none',
   MTRM: 'MTRM|Unit|none|none'
 };
 

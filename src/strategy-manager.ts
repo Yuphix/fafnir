@@ -3,6 +3,7 @@ import { TriangularArbitrage } from './strategies/triangular-arbitrage.js';
 import { FibonacciStrategy } from './strategies/fibonacci-strategy.js';
 import { ArbitrageStrategy } from './strategies/arbitrage-strategy.js';
 import { LiquiditySpiderStrategy } from './strategies/liquidity-spider-strategy.js';
+import { FafnirTreasureHoarder } from './strategies/fafnir-treasure-hoarder.js';
 
 export class StrategyManager {
   private strategies: Map<string, TradingStrategy> = new Map();
@@ -12,7 +13,7 @@ export class StrategyManager {
   private strategySwitchInterval: number = Number(process.env.STRATEGY_SWITCH_INTERVAL_MS || 300000); // default 5 min
   private forceStrategy: string | undefined = process.env.FORCE_STRATEGY?.toLowerCase();
   private rotationMode: 'score' | 'round_robin' = (process.env.STRATEGY_ROTATION_MODE === 'round_robin') ? 'round_robin' : 'score';
-  private strategyOrder: string[] = ['arbitrage', 'triangular', 'fibonacci', 'liquidity-spider'];
+  private strategyOrder: string[] = ['arbitrage', 'triangular', 'fibonacci', 'liquidity-spider', 'fafnir-treasure-hoarder'];
 
     constructor() {
     this.initializeStrategies();
@@ -30,6 +31,7 @@ export class StrategyManager {
     this.strategies.set('triangular', new TriangularArbitrage());
     this.strategies.set('fibonacci', new FibonacciStrategy());
     this.strategies.set('liquidity-spider', new LiquiditySpiderStrategy());
+    this.strategies.set('fafnir-treasure-hoarder', new FafnirTreasureHoarder());
 
     // Initialize performance tracking for each strategy
     for (const [name] of this.strategies) {

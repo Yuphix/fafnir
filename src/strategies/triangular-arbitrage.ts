@@ -324,7 +324,9 @@ export class TriangularArbitrage implements TradingStrategy {
         });
 
         console.log(`     📊 Hop ${i + 1}: Expected ${quotedOut.toFixed(6)}, Actual ${actualAmountOut.toFixed(6)} ${hop.to}`);
-        // Continue to next hop (currentAmount already updated above)
+
+        // Update current amount for next hop
+        currentAmount = actualAmountOut;
       }
 
       // Calculate actual profit based on final amount received vs initial investment

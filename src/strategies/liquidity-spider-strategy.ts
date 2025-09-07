@@ -100,7 +100,6 @@ export class LiquiditySpiderStrategy implements TradingStrategy {
     // Define target pools for scanning (verified working pools from discovery)
     this.poolTargets = [
       'GALA/GUSDC',   // 10000bps - High volume
-      'GALA/ETIME',   // 3000bps  - Working well
       'GALA/GUSDT',   // 10000bps - Stable pair
       'GUSDC/GUSDT',  // 10000bps - Stablecoin arbitrage
       'GALA/GWETH',   // 10000bps - ETH pair (note: 10000bps, not 3000bps!)
@@ -734,7 +733,6 @@ export class LiquiditySpiderStrategy implements TradingStrategy {
       GWBTC: 'GWBTC|Unit|none|none',
       GUSDT: 'GUSDT|Unit|none|none',
       SILK: 'SILK|Unit|none|none',
-      ETIME: 'ETIME|Unit|none|none'
     };
 
     const token = TOKENS[symbol];

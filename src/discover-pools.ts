@@ -35,7 +35,7 @@ interface DiscoveryReport {
 // All known GalaChain tokens
 const TOKENS = [
   'GALA', 'GUSDC', 'GUSDT', 'GWETH', 'GWBTC',
-  'SILK', 'ETIME', 'MTRM', 'GVBK', 'POWER'
+  'SILK', 'MTRM', 'GVBK', 'POWER'
 ];
 
 const FEE_TIERS = [500, 3000, 10000]; // 0.05%, 0.3%, 1.0%
@@ -48,7 +48,6 @@ function getTokenString(symbol: string): string {
     'GWETH': 'GWETH|Unit|none|none',
     'GWBTC': 'GWBTC|Unit|none|none',
     'SILK': 'SILK|Unit|none|none',
-    'ETIME': 'ETIME|Unit|none|none',
     'MTRM': 'MTRM|Unit|none|none',
     'GVBK': 'GVBK|Unit|none|none',
     'POWER': 'POWER|Unit|none|none'

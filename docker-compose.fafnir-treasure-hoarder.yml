@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  fafnir-treasure-hoarder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fafnir-treasure-hoarder-bot
+    environment:
+      - NODE_ENV=production
+      - FORCE_STRATEGY=fafnir-treasure-hoarder
+      - STRATEGY_SWITCH_INTERVAL_MS=300000
+      - LOG_LEVEL=info
+      - GALACHAIN_WALLET_ADDRESS=${GALACHAIN_WALLET_ADDRESS}
+      - GALACHAIN_PRIVATE_KEY=${GALACHAIN_PRIVATE_KEY}
+      - GALACHAIN_PUBLIC_KEY=${GALACHAIN_PUBLIC_KEY}
+      - GALACHAIN_RPC_URL=${GALACHAIN_RPC_URL:-https://galachain-rpc.gala.com}
+      - GALASWAP_API_URL=${GALASWAP_API_URL:-https://api.galaswap.gala.com}
+      - API_PORT=${API_PORT:-3000}
+      - ENABLE_API_SERVER=${ENABLE_API_SERVER:-true}
+      # RSI + Bollinger Bands specific configuration
+      - RSI_PERIOD=14
+      - RSI_OVERSOLD=35
+      - RSI_OVERBOUGHT=65
+      - BB_PERIOD=20
+      - BB_STD_DEV=2
+      - BB_SQUEEZE_THRESHOLD=0.02
+      - MIN_CONFIDENCE=0.6
+      - MAX_RISK_PER_TRADE=0.02
+      - TRADE_COOLDOWN_MS=300000
+      - SLIPPAGE_BPS=100
+      - MIN_TRADE_AMOUNT=10
+      - MAX_TRADE_AMOUNT=1000
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    ports:
+      - "${API_PORT:-3000}:3000"
+    restart: unless-stopped
+    networks:
+      - fafnir-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/dashboard"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  fafnir-network:
+    driver: bridge

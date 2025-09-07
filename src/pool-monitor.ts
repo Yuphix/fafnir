@@ -69,7 +69,7 @@ export class PoolMonitor {
       'GUSDC/GWETH', 'GUSDC/GUSDT', 'GUSDC/GWBTC',
       'GWETH/GUSDT', 'GWETH/GWBTC', 'GUSDT/GWBTC',
       'GALA/SILK', 'GUSDC/SILK', 'GWETH/SILK',
-      'GALA/ETIME', 'GUSDC/ETIME', 'SILK/ETIME'
+      'SILK/GUSDC'
     ];
 
     this.logDir = path.join(process.cwd(), 'logs', 'pools');
@@ -435,7 +435,6 @@ export class PoolMonitor {
       GWBTC: 'GWBTC|Unit|none|none',
       GUSDT: 'GUSDT|Unit|none|none',
       SILK: 'SILK|Unit|none|none',
-      ETIME: 'ETIME|Unit|none|none'
     };
 
     const token = TOKENS[symbol];
