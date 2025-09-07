@@ -9,6 +9,7 @@ import { configManager, TradingConfig } from './config-manager.js';
 import { securityManager } from './security-manager.js';
 import { MultiWalletManager } from './multi-wallet-manager-simple.js';
 import { MultiUserStrategyManager } from './multi-user-strategy-manager.js';
+import { BackendStoryGenerator } from './story-generator.js';
 import { ethers } from 'ethers';
 import crypto from 'crypto';
 
@@ -86,6 +87,7 @@ class FafnirBotAPI {
   private port: number;
   private multiWalletManager: MultiWalletManager;
   private multiUserStrategyManager: MultiUserStrategyManager;
+  private storyGenerator: BackendStoryGenerator;
   private addressMappings: Map<string, string> = new Map(); // ethereum -> galachain
 
   // File paths
@@ -100,6 +102,7 @@ class FafnirBotAPI {
     this.wss = new WebSocketServer({ server: this.server });
     this.multiWalletManager = new MultiWalletManager();
     this.multiUserStrategyManager = new MultiUserStrategyManager();
+    this.storyGenerator = new BackendStoryGenerator();
 
     // Load existing address mappings
     this.loadAddressMappings();
@@ -110,6 +113,11 @@ class FafnirBotAPI {
     // Connect multi-user strategy manager for real-time updates
     this.multiUserStrategyManager.setBroadcastCallback((update) => {
       this.broadcastStrategyUpdate.call(this, update);
+    });
+
+    // Connect story generator Oracle system for real-time updates
+    this.storyGenerator.setBroadcastCallback((update) => {
+      this.broadcastOracleUpdate.call(this, update);
     });
 
     this.setupMiddleware();
@@ -199,6 +207,175 @@ class FafnirBotAPI {
         const limit = parseInt(req.query.limit as string) || 50;
         const trades = await this.getTrades(limit);
         this.sendResponse(res, trades);
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    // Enhanced transaction details for content generation
+    this.app.get('/api/transactions/detailed', async (req: Request, res: Response) => {
+      try {
+        const limit = parseInt(req.query.limit as string) || 50;
+        const transactions = await this.getDetailedTransactions(limit);
+        this.sendResponse(res, transactions);
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    // Single transaction with full narrative data
+    this.app.get('/api/transactions/:transactionId', async (req: Request, res: Response) => {
+      try {
+        const { transactionId } = req.params;
+        const transaction = await this.getTransactionNarrative(transactionId);
+        if (!transaction) {
+          return this.sendError(res, 'Transaction not found', 404);
+        }
+        this.sendResponse(res, transaction);
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    // Story generation endpoints
+    this.app.get('/api/stories/wallet/:address', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const stories = await this.storyGenerator.getWalletStories(address, limit);
+        this.sendResponse(res, { stories, walletAddress: address });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.post('/api/stories/wallet/:address/preferences', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const preferences = req.body;
+        await this.storyGenerator.updateWalletPreferences(address, preferences);
+        this.sendResponse(res, { success: true, message: 'Preferences updated' });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.post('/api/stories/wallet/:address/generate', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const { storyType } = req.body;
+        const story = await this.storyGenerator.forceGenerateStory(address, storyType);
+        this.sendResponse(res, { story, message: 'Story generated successfully' });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    // Claude configuration endpoints
+    this.app.get('/api/stories/claude/config', async (req: Request, res: Response) => {
+      try {
+        const config = this.storyGenerator.getClaudeConfig();
+        this.sendResponse(res, config);
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.put('/api/stories/claude/config', async (req: Request, res: Response) => {
+      try {
+        const config = req.body;
+        this.storyGenerator.updateClaudeConfig(config);
+        this.sendResponse(res, { success: true, message: 'Claude configuration updated' });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.put('/api/stories/claude/system-prompt', async (req: Request, res: Response) => {
+      try {
+        const { systemPrompt } = req.body;
+        if (!systemPrompt) {
+          return this.sendError(res, 'systemPrompt is required', 400);
+        }
+        this.storyGenerator.updateSystemPrompt(systemPrompt);
+        this.sendResponse(res, { success: true, message: 'System prompt updated' });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.put('/api/stories/claude/user-prompt', async (req: Request, res: Response) => {
+      try {
+        const { userPromptTemplate } = req.body;
+        if (!userPromptTemplate) {
+          return this.sendError(res, 'userPromptTemplate is required', 400);
+        }
+        this.storyGenerator.updateUserPromptTemplate(userPromptTemplate);
+        this.sendResponse(res, { success: true, message: 'User prompt template updated' });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    // Oracle system endpoints
+    this.app.get('/api/oracle/status', async (req: Request, res: Response) => {
+      try {
+        const oracleState = this.storyGenerator.getOracleState();
+        this.sendResponse(res, oracleState);
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.get('/api/oracle/terminal', async (req: Request, res: Response) => {
+      try {
+        const terminalDisplay = this.storyGenerator.getOracleTerminalDisplay();
+        this.sendResponse(res, { terminal: terminalDisplay });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    // Wallet-specific Oracle endpoints
+    this.app.get('/api/oracle/wallet/:address/status', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const walletOracleState = this.storyGenerator.getWalletOracleState(address);
+        this.sendResponse(res, walletOracleState);
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.get('/api/oracle/wallet/:address/terminal', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const terminalDisplay = this.storyGenerator.getWalletOracleTerminalDisplay(address);
+        this.sendResponse(res, { terminal: terminalDisplay });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.put('/api/oracle/wallet/:address/preferences', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const preferences = req.body;
+        this.storyGenerator.updateWalletOraclePreferences(address, preferences);
+        this.sendResponse(res, { success: true, message: 'Oracle preferences updated' });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    this.app.get('/api/oracle/wallets/all', async (req: Request, res: Response) => {
+      try {
+        const allWalletOracles = this.storyGenerator.getAllWalletOracles();
+        const walletOraclesArray = Array.from(allWalletOracles.entries()).map(([address, state]) => ({
+          walletAddress: address,
+          ...state
+        }));
+        this.sendResponse(res, { walletOracles: walletOraclesArray });
       } catch (error: any) {
         this.sendError(res, error.message, 500);
       }
@@ -1380,6 +1557,456 @@ class FafnirBotAPI {
     }
   }
 
+  /**
+   * Enhanced transaction data for content generation with rich narrative details
+   */
+  private async getDetailedTransactions(limit: number = 50): Promise<any[]> {
+    try {
+      const transactions = await this.getTransactionData();
+      const trades = await this.getTrades(1000); // Get more context
+
+      return transactions.slice(-limit).map(tx => {
+        // Calculate position tracking
+        const relatedTrades = trades.filter(t =>
+          t.pair === this.extractPairFromTokens(tx.tokenIn, tx.tokenOut)
+        );
+
+        const position = this.calculatePositionMetrics(tx, relatedTrades);
+
+        return {
+          // Core Transaction Data
+          transactionId: tx.transactionId,
+          timestamp: tx.timestamp,
+          blockTime: new Date(tx.timestamp).getTime(),
+
+          // Trading Action Details
+          action: {
+            type: tx.type,
+            strategy: tx.strategy || this.detectStrategyFromTransaction(tx),
+            confidence: this.calculateTradeConfidence(tx, relatedTrades)
+          },
+
+          // Token Exchange Details
+          exchange: {
+            tokenIn: {
+              symbol: this.getTokenSymbol(tx.tokenIn),
+              fullName: this.getTokenFullName(tx.tokenIn),
+              amount: parseFloat(tx.amountIn),
+              valueUSD: this.estimateTokenValueUSD(tx.tokenIn, tx.amountIn)
+            },
+            tokenOut: {
+              symbol: this.getTokenSymbol(tx.tokenOut),
+              fullName: this.getTokenFullName(tx.tokenOut),
+              amountExpected: parseFloat(tx.quotedAmountOut),
+              amountActual: tx.amountOut === 'pending' ? null : parseFloat(tx.amountOut),
+              valueUSD: this.estimateTokenValueUSD(tx.tokenOut, tx.quotedAmountOut)
+            },
+            slippage: {
+              allowedBps: tx.slippageBps,
+              actualBps: tx.actualSlippage || null,
+              slippageImpact: this.calculateSlippageImpact(tx)
+            }
+          },
+
+          // Position & Profit Tracking
+          position: {
+            currentHoldings: position.currentHoldings,
+            averageEntryPrice: position.averageEntryPrice,
+            unrealizedPnL: position.unrealizedPnL,
+            realizedPnL: tx.profit || 0,
+            profitPercentage: tx.profitPercentage || 0,
+            totalInvested: position.totalInvested,
+            positionSize: position.positionSize
+          },
+
+          // Transaction Execution Details
+          execution: {
+            status: tx.success ? 'SUCCESS' : 'FAILED',
+            transactionHash: tx.transactionHash,
+            gasUsed: tx.gasUsed,
+            feeTier: tx.feeTier,
+            executionTime: this.estimateExecutionTime(tx),
+            networkConditions: this.assessNetworkConditions(tx)
+          },
+
+          // Wallet & Identity
+          trader: {
+            walletAddress: tx.walletAddress,
+            addressType: this.getAddressType(tx.walletAddress),
+            traderRank: this.calculateTraderRank(tx.walletAddress, relatedTrades),
+            experienceLevel: this.assessExperienceLevel(tx.walletAddress, relatedTrades)
+          },
+
+          // Market Context for Storytelling
+          marketContext: {
+            timeOfDay: this.getTimeOfDay(tx.timestamp),
+            marketPhase: this.getMarketPhase(tx.timestamp),
+            volatilityLevel: this.assessVolatility(relatedTrades),
+            trendDirection: this.getTrendDirection(relatedTrades),
+            competitionLevel: this.assessCompetitionLevel(tx),
+            riskLevel: this.calculateRiskLevel(tx, position)
+          },
+
+          // Narrative Elements for Content Generation
+          narrative: {
+            questType: this.generateQuestType(tx),
+            treasureClass: this.classifyTreasure(tx),
+            battleOutcome: this.determineBattleOutcome(tx),
+            heroicMoment: this.identifyHeroicMoment(tx, position),
+            legendaryStatus: this.assessLegendaryStatus(tx, position),
+            storyElements: this.generateStoryElements(tx, position, relatedTrades)
+          },
+
+          // Error Details (if any)
+          error: tx.error ? {
+            message: tx.error,
+            category: this.categorizeError(tx.error),
+            recoveryAction: this.suggestRecoveryAction(tx.error)
+          } : null
+        };
+      });
+    } catch (error) {
+      console.error('Error generating detailed transactions:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get single transaction with full narrative context
+   */
+  private async getTransactionNarrative(transactionId: string): Promise<any | null> {
+    try {
+      const transactions = await this.getDetailedTransactions(1000);
+      return transactions.find(tx => tx.transactionId === transactionId) || null;
+    } catch (error) {
+      console.error('Error getting transaction narrative:', error);
+      return null;
+    }
+  }
+
+  // Helper methods for enhanced transaction data
+  private extractPairFromTokens(tokenIn: string, tokenOut: string): string {
+    const symbolIn = this.getTokenSymbol(tokenIn);
+    const symbolOut = this.getTokenSymbol(tokenOut);
+    return `${symbolIn}/${symbolOut}`;
+  }
+
+  private getTokenSymbol(tokenString: string): string {
+    const parts = tokenString.split('|');
+    return parts[0] || tokenString;
+  }
+
+  private getTokenFullName(tokenString: string): string {
+    const symbol = this.getTokenSymbol(tokenString);
+    const nameMap: { [key: string]: string } = {
+      'GALA': 'Gala Games Token',
+      'GUSDC': 'Gala USD Coin',
+      'GWETH': 'Gala Wrapped Ethereum',
+      'GWBTC': 'Gala Wrapped Bitcoin',
+      'GUSDT': 'Gala Tether USD',
+      'SILK': 'Silk Token'
+    };
+    return nameMap[symbol] || symbol;
+  }
+
+  private estimateTokenValueUSD(tokenString: string, amount: string): number {
+    // Simplified USD estimation - in production, you'd use real price feeds
+    const symbol = this.getTokenSymbol(tokenString);
+    const priceMap: { [key: string]: number } = {
+      'GALA': 0.0162,
+      'GUSDC': 1.00,
+      'GWETH': 2500,
+      'GWBTC': 45000,
+      'GUSDT': 1.00,
+      'SILK': 0.50
+    };
+    return parseFloat(amount) * (priceMap[symbol] || 0);
+  }
+
+  private calculatePositionMetrics(tx: any, relatedTrades: any[]): any {
+    // Calculate position metrics from trade history
+    let totalInvested = 0;
+    let totalReceived = 0;
+    let currentHoldings = 0;
+
+    relatedTrades.forEach(trade => {
+      if (trade.action === 'buy') {
+        totalInvested += trade.amount * trade.price;
+        currentHoldings += trade.amount;
+      } else {
+        totalReceived += trade.amount * trade.price;
+        currentHoldings -= trade.amount;
+      }
+    });
+
+    const averageEntryPrice = totalInvested / Math.max(currentHoldings, 1);
+    const currentPrice = this.estimateTokenValueUSD(tx.tokenOut, '1');
+    const unrealizedPnL = currentHoldings * (currentPrice - averageEntryPrice);
+
+    return {
+      currentHoldings,
+      averageEntryPrice,
+      unrealizedPnL,
+      totalInvested,
+      positionSize: totalInvested
+    };
+  }
+
+  private detectStrategyFromTransaction(tx: any): string {
+    // Detect strategy based on transaction patterns
+    if (tx.type === 'ARBITRAGE') return 'arbitrage';
+    if (tx.amountIn === '1' && tx.tokenOut.includes('GALA')) return 'fafnir-treasure-hoarder';
+    return 'unknown';
+  }
+
+  private calculateTradeConfidence(tx: any, relatedTrades: any[]): number {
+    // Calculate confidence based on success rate and patterns
+    const recentTrades = relatedTrades.slice(-10);
+    const successRate = recentTrades.filter(t => t.status === 'success').length / Math.max(recentTrades.length, 1);
+    return Math.round(successRate * 100);
+  }
+
+  private calculateSlippageImpact(tx: any): string {
+    if (!tx.actualSlippage) return 'unknown';
+    if (tx.actualSlippage < 50) return 'minimal';
+    if (tx.actualSlippage < 100) return 'moderate';
+    return 'high';
+  }
+
+  private estimateExecutionTime(tx: any): number {
+    // Estimate based on network conditions and transaction complexity
+    return Math.random() * 30000 + 5000; // 5-35 seconds
+  }
+
+  private assessNetworkConditions(tx: any): string {
+    const conditions = ['optimal', 'good', 'congested', 'slow'];
+    return conditions[Math.floor(Math.random() * conditions.length)];
+  }
+
+  private getAddressType(address: string): string {
+    if (address.startsWith('eth|')) return 'ethereum';
+    if (address.startsWith('gala|')) return 'galachain';
+    return 'unknown';
+  }
+
+  private calculateTraderRank(address: string, trades: any[]): string {
+    const tradeCount = trades.filter(t => t.pair).length;
+    if (tradeCount > 100) return 'legendary';
+    if (tradeCount > 50) return 'expert';
+    if (tradeCount > 20) return 'experienced';
+    if (tradeCount > 5) return 'novice';
+    return 'beginner';
+  }
+
+  private assessExperienceLevel(address: string, trades: any[]): string {
+    const profitableTrades = trades.filter(t => (t.profit || 0) > 0).length;
+    const totalTrades = trades.length;
+    const winRate = totalTrades > 0 ? profitableTrades / totalTrades : 0;
+
+    if (winRate > 0.8) return 'master';
+    if (winRate > 0.6) return 'skilled';
+    if (winRate > 0.4) return 'learning';
+    return 'apprentice';
+  }
+
+  private getTimeOfDay(timestamp: string): string {
+    const hour = new Date(timestamp).getHours();
+    if (hour < 6) return 'dawn';
+    if (hour < 12) return 'morning';
+    if (hour < 18) return 'afternoon';
+    if (hour < 22) return 'evening';
+    return 'night';
+  }
+
+  private getMarketPhase(timestamp: string): string {
+    const phases = ['accumulation', 'markup', 'distribution', 'markdown'];
+    return phases[Math.floor(Math.random() * phases.length)];
+  }
+
+  private assessVolatility(trades: any[]): string {
+    // Simplified volatility assessment
+    const recentTrades = trades.slice(-20);
+    const priceChanges = recentTrades.map(t => Math.abs(t.profit || 0));
+    const avgChange = priceChanges.reduce((a, b) => a + b, 0) / Math.max(priceChanges.length, 1);
+
+    if (avgChange > 5) return 'extreme';
+    if (avgChange > 2) return 'high';
+    if (avgChange > 0.5) return 'moderate';
+    return 'low';
+  }
+
+  private getTrendDirection(trades: any[]): string {
+    const recentTrades = trades.slice(-10);
+    const profits = recentTrades.map(t => t.profit || 0);
+    const trend = profits.reduce((a, b) => a + b, 0);
+
+    if (trend > 5) return 'strongly_bullish';
+    if (trend > 1) return 'bullish';
+    if (trend > -1) return 'sideways';
+    if (trend > -5) return 'bearish';
+    return 'strongly_bearish';
+  }
+
+  private assessCompetitionLevel(tx: any): string {
+    // Assess based on slippage and execution speed
+    const slippage = tx.slippageBps || 0;
+    if (slippage > 200) return 'fierce';
+    if (slippage > 100) return 'competitive';
+    if (slippage > 50) return 'moderate';
+    return 'calm';
+  }
+
+  private calculateRiskLevel(tx: any, position: any): string {
+    const positionSize = position.positionSize || 0;
+    const amount = parseFloat(tx.amountIn) || 0;
+    const riskRatio = amount / Math.max(positionSize, 1);
+
+    if (riskRatio > 0.5) return 'extreme';
+    if (riskRatio > 0.2) return 'high';
+    if (riskRatio > 0.1) return 'moderate';
+    return 'conservative';
+  }
+
+  // Narrative generation methods for fantasy storytelling
+  private generateQuestType(tx: any): string {
+    const questTypes = [
+      'treasure_hunt', 'dragon_slaying', 'artifact_recovery', 'dungeon_raid',
+      'merchant_expedition', 'royal_commission', 'ancient_ritual', 'prophecy_fulfillment'
+    ];
+
+    // Base on transaction type and amount
+    if (tx.type === 'BUY') {
+      if (parseFloat(tx.amountIn) > 100) return 'dragon_slaying';
+      if (parseFloat(tx.amountIn) < 5) return 'treasure_hunt';
+    }
+
+    return questTypes[Math.floor(Math.random() * questTypes.length)];
+  }
+
+  private classifyTreasure(tx: any): string {
+    const symbol = this.getTokenSymbol(tx.tokenOut);
+    const amount = parseFloat(tx.quotedAmountOut) || 0;
+
+    const treasureMap: { [key: string]: string } = {
+      'GALA': amount > 1000 ? 'legendary_gala_hoard' : amount > 100 ? 'rare_gala_cache' : 'common_gala_coins',
+      'GWETH': 'ethereal_crystals',
+      'GWBTC': 'ancient_bitcoin_relics',
+      'GUSDC': 'stable_gold_pieces'
+    };
+
+    return treasureMap[symbol] || 'mysterious_tokens';
+  }
+
+  private determineBattleOutcome(tx: any): string {
+    if (tx.success) {
+      const profit = tx.profit || 0;
+      if (profit > 10) return 'glorious_victory';
+      if (profit > 1) return 'successful_conquest';
+      if (profit > 0) return 'narrow_victory';
+      return 'pyrrhic_victory';
+    }
+    return 'heroic_defeat';
+  }
+
+  private identifyHeroicMoment(tx: any, position: any): string {
+    const moments = [
+      'perfect_timing', 'against_all_odds', 'strategic_brilliance', 'lucky_discovery',
+      'calculated_risk', 'market_mastery', 'divine_intervention', 'legendary_patience'
+    ];
+
+    if (tx.actualSlippage && tx.actualSlippage < 10) return 'perfect_timing';
+    if ((tx.profit || 0) > 5) return 'strategic_brilliance';
+    if (position.unrealizedPnL > 0) return 'market_mastery';
+
+    return moments[Math.floor(Math.random() * moments.length)];
+  }
+
+  private assessLegendaryStatus(tx: any, position: any): boolean {
+    const profit = tx.profit || 0;
+    const positionValue = position.positionSize || 0;
+
+    return profit > 20 || positionValue > 1000 || (tx.profitPercentage || 0) > 50;
+  }
+
+  private generateStoryElements(tx: any, position: any, relatedTrades: any[]): any {
+    return {
+      setting: this.generateSetting(tx),
+      characters: this.generateCharacters(tx, position),
+      conflict: this.generateConflict(tx, relatedTrades),
+      resolution: this.generateResolution(tx),
+      moralLesson: this.generateMoralLesson(tx, position)
+    };
+  }
+
+  private generateSetting(tx: any): string {
+    const timeOfDay = this.getTimeOfDay(tx.timestamp);
+    const settings = {
+      dawn: 'misty_mountain_peaks',
+      morning: 'bustling_marketplace',
+      afternoon: 'golden_trading_halls',
+      evening: 'twilight_exchange',
+      night: 'moonlit_treasury'
+    };
+    return settings[timeOfDay as keyof typeof settings] || 'mysterious_realm';
+  }
+
+  private generateCharacters(tx: any, position: any): any {
+    const traderRank = this.calculateTraderRank(tx.walletAddress, []);
+    const characterMap = {
+      legendary: 'ancient_dragon_lord',
+      expert: 'master_merchant',
+      experienced: 'seasoned_adventurer',
+      novice: 'brave_apprentice',
+      beginner: 'curious_wanderer'
+    };
+
+    return {
+      protagonist: characterMap[traderRank as keyof typeof characterMap] || 'mysterious_trader',
+      allies: ['wise_oracle', 'loyal_companion', 'market_sage'],
+      antagonists: ['market_volatility_demon', 'slippage_trickster', 'gas_fee_goblin']
+    };
+  }
+
+  private generateConflict(tx: any, relatedTrades: any[]): string {
+    if (tx.error) return 'cursed_transaction';
+    if ((tx.actualSlippage || 0) > 100) return 'slippage_storm';
+    if (relatedTrades.filter(t => t.status === 'failed').length > 2) return 'losing_streak_curse';
+    return 'market_uncertainty';
+  }
+
+  private generateResolution(tx: any): string {
+    if (tx.success && (tx.profit || 0) > 0) return 'treasure_secured';
+    if (tx.success) return 'mission_accomplished';
+    return 'lesson_learned';
+  }
+
+  private generateMoralLesson(tx: any, position: any): string {
+    const lessons = [
+      'patience_rewards_the_wise',
+      'calculated_risks_yield_treasures',
+      'market_timing_is_everything',
+      'diversification_brings_stability',
+      'knowledge_conquers_fear'
+    ];
+    return lessons[Math.floor(Math.random() * lessons.length)];
+  }
+
+  private categorizeError(error: string): string {
+    if (error.includes('slippage')) return 'slippage_exceeded';
+    if (error.includes('balance')) return 'insufficient_funds';
+    if (error.includes('gas')) return 'gas_estimation_failed';
+    if (error.includes('network')) return 'network_congestion';
+    return 'unknown_error';
+  }
+
+  private suggestRecoveryAction(error: string): string {
+    if (error.includes('slippage')) return 'increase_slippage_tolerance';
+    if (error.includes('balance')) return 'add_more_funds';
+    if (error.includes('gas')) return 'retry_with_higher_gas';
+    if (error.includes('network')) return 'wait_for_network_stability';
+    return 'contact_support';
+  }
+
   private async getAvailableStrategies(): Promise<any[]> {
     const strategies = [
       {
@@ -2047,6 +2674,21 @@ class FafnirBotAPI {
       console.log(`   GET  /api/bots/status - Bot status information`);
       console.log(`   GET  /api/performance - Performance metrics`);
       console.log(`   GET  /api/trades - Recent trades`);
+      console.log(`   GET  /api/transactions/detailed - Enhanced transaction data for content generation`);
+      console.log(`   GET  /api/transactions/:id - Single transaction with full narrative context`);
+      console.log(`   GET  /api/stories/wallet/:address - Get wallet-specific stories`);
+      console.log(`   POST /api/stories/wallet/:address/preferences - Update story preferences`);
+      console.log(`   POST /api/stories/wallet/:address/generate - Force generate story`);
+      console.log(`   GET  /api/stories/claude/config - Get Claude configuration`);
+      console.log(`   PUT  /api/stories/claude/config - Update Claude configuration`);
+      console.log(`   PUT  /api/stories/claude/system-prompt - Update system prompt`);
+      console.log(`   PUT  /api/stories/claude/user-prompt - Update user prompt template`);
+      console.log(`   GET  /api/oracle/status - Global Oracle transmission system status`);
+      console.log(`   GET  /api/oracle/terminal - Global Oracle CRT terminal display`);
+      console.log(`   GET  /api/oracle/wallet/:address/status - Wallet-specific Oracle status`);
+      console.log(`   GET  /api/oracle/wallet/:address/terminal - Wallet-specific Oracle terminal`);
+      console.log(`   PUT  /api/oracle/wallet/:address/preferences - Update wallet Oracle preferences`);
+      console.log(`   GET  /api/oracle/wallets/all - All connected wallet Oracle states`);
       console.log(`   GET  /api/positions - Current positions`);
       console.log(`   GET  /api/logs - Recent log entries`);
       console.log(`   GET  /api/pools - Pool data`);
@@ -2077,6 +2719,7 @@ class FafnirBotAPI {
   }
 
   public stop() {
+    this.storyGenerator.stop();
     this.wss.close();
     this.server.close(() => {
       console.log('✅ API server stopped');
@@ -2175,6 +2818,18 @@ class FafnirBotAPI {
       timestamp: new Date().toISOString()
     };
 
+    this.wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(message));
+      }
+    });
+  }
+
+  private broadcastOracleUpdate(update: any): void {
+    const message = {
+      ...update,
+      timestamp: new Date().toISOString()
+    };
     this.wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(message));

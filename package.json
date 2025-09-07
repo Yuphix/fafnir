@@ -37,6 +37,7 @@
     "dev": "tsx --watch src/fafnir-bot-enhanced.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.61.0",
     "@gala-chain/api": "^2.4.3",
     "@gala-chain/client": "^2.4.3",
     "@gala-chain/connect": "^2.4.3",
