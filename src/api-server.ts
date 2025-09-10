@@ -26,6 +26,8 @@ interface BotStatus {
   uptime: number;
   lastActivity: string;
   containerId?: string;
+  walletAddress?: string;
+  userType?: 'multi-user' | 'container' | 'api-server';
 }
 
 interface TradeData {
@@ -178,6 +180,18 @@ class FafnirBotAPI {
         status: 'ok',
         timestamp: new Date().toISOString(),
         version: '1.0.0'
+      });
+    });
+
+    // CORS test endpoint
+    this.app.get('/api/cors-test', (req, res) => {
+      const origin = req.headers.origin;
+      res.json({
+        success: true,
+        message: 'CORS test successful!',
+        origin: origin || 'no-origin',
+        timestamp: new Date().toISOString(),
+        allowedOrigins: securityManager.getCorsOrigins()
       });
     });
 
@@ -397,6 +411,56 @@ class FafnirBotAPI {
         const lines = parseInt(req.query.lines as string) || 100;
         const logs = await this.getLogs(lines);
         this.sendResponse(res, logs);
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    // Wallet-specific logs
+    this.app.get('/api/logs/wallet/:address', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        const lines = parseInt(req.query.lines as string) || 100;
+        const includeStrategy = req.query.strategy === 'true';
+        const logs = await this.getWalletLogs(address, lines, includeStrategy);
+        this.sendResponse(res, {
+          walletAddress: address,
+          logs: logs.entries,
+          totalLines: logs.totalLines,
+          sources: logs.sources
+        });
+      } catch (error: any) {
+        this.sendError(res, error.message, 500);
+      }
+    });
+
+    // Real-time wallet log streaming
+    this.app.get('/api/logs/wallet/:address/stream', async (req: Request, res: Response) => {
+      try {
+        const { address } = req.params;
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+
+        // Send initial logs
+        const logs = await this.getWalletLogs(address, 50);
+        res.write(`data: ${JSON.stringify({ type: 'initial', logs: logs.entries })}\n\n`);
+
+        // Set up real-time monitoring (simplified for now)
+        const interval = setInterval(async () => {
+          try {
+            const recentLogs = await this.getWalletLogs(address, 5);
+            if (recentLogs.entries.length > 0) {
+              res.write(`data: ${JSON.stringify({ type: 'update', logs: recentLogs.entries })}\n\n`);
+            }
+          } catch (error) {
+            console.error('Stream error:', error);
+          }
+        }, 5000);
+
+        req.on('close', () => {
+          clearInterval(interval);
+        });
       } catch (error: any) {
         this.sendError(res, error.message, 500);
       }
@@ -1330,7 +1394,23 @@ class FafnirBotAPI {
     return new Promise((resolve) => {
       const statuses: BotStatus[] = [];
 
-      // Check Docker containers
+      // Check Multi-User Strategy Manager first (primary bot system)
+      const activeUsers = this.multiUserStrategyManager.getAllUserStatuses();
+
+      activeUsers.forEach(userSession => {
+        statuses.push({
+          botName: `fafnir-multi-user-${userSession.walletAddress.slice(-8)}`,
+          strategy: userSession.selectedStrategy || 'Unknown',
+          status: userSession.isActive ? 'running' : 'stopped',
+          uptime: userSession.startTime ? Math.floor((Date.now() - userSession.startTime) / 1000) : 0,
+          lastActivity: new Date(userSession.lastActivity || Date.now()).toISOString(),
+          containerId: `multi-user-${userSession.walletAddress}`,
+          walletAddress: userSession.walletAddress,
+          userType: 'multi-user'
+        });
+      });
+
+      // Check Docker containers as secondary
       const dockerPs = spawn('docker', ['ps', '--format', 'table {{.Names}}\t{{.Status}}\t{{.CreatedAt}}']);
       let output = '';
 
@@ -1341,7 +1421,7 @@ class FafnirBotAPI {
       dockerPs.on('close', () => {
         const lines = output.split('\n').filter(line => line.includes('fafnir-bot'));
 
-                lines.forEach(line => {
+        lines.forEach(line => {
           const parts = line.split('\t');
           if (parts.length >= 2) {
             const name = parts[0].trim();
@@ -1355,6 +1435,7 @@ class FafnirBotAPI {
             else if (name.includes('arbitrage') && name.includes('triangular')) strategy = 'Triangular Arbitrage';
             else if (name.includes('arbitrage')) strategy = 'Arbitrage';
             else if (name.includes('conservative')) strategy = 'Conservative Fibonacci';
+            else if (name.includes('treasure-hoarder')) strategy = 'Fafnir Treasure Hoarder';
 
             statuses.push({
               botName: name,
@@ -1362,19 +1443,22 @@ class FafnirBotAPI {
               status: status.includes('Up') ? 'running' : 'stopped',
               uptime: this.parseUptime(status),
               lastActivity: new Date().toISOString(),
-              containerId: name
+              containerId: name,
+              userType: 'container'
             });
           }
         });
 
-        // If no containers found, show default status
+        // If no active users and no containers, show API server status
         if (statuses.length === 0) {
           statuses.push({
-            botName: 'fafnir-bot-fibonacci',
-            strategy: 'DCA Fibonacci',
-            status: 'stopped',
-            uptime: 0,
-            lastActivity: new Date().toISOString()
+            botName: 'fafnir-api-server',
+            strategy: 'Multi-User API Server',
+            status: 'running', // API server is running if this code executes
+            uptime: process.uptime(),
+            lastActivity: new Date().toISOString(),
+            containerId: 'api-server-process',
+            userType: 'api-server'
           });
         }
 
@@ -1382,13 +1466,19 @@ class FafnirBotAPI {
       });
 
       dockerPs.on('error', () => {
-        resolve([{
-          botName: 'fafnir-bot-fibonacci',
-          strategy: 'DCA Fibonacci',
-          status: 'error',
-          uptime: 0,
-          lastActivity: new Date().toISOString()
-        }]);
+        // If Docker command fails, still report multi-user system status
+        if (statuses.length === 0) {
+          statuses.push({
+            botName: 'fafnir-api-server',
+            strategy: 'Multi-User API Server',
+            status: 'running',
+            uptime: process.uptime(),
+            lastActivity: new Date().toISOString(),
+            containerId: 'api-server-process',
+            userType: 'api-server'
+          });
+        }
+        resolve(statuses);
       });
     });
   }
@@ -1543,6 +1633,139 @@ class FafnirBotAPI {
     } catch (error) {
       console.error('Error reading logs:', error);
       return [];
+    }
+  }
+
+  private async getWalletLogs(walletAddress: string, lines: number = 100, includeStrategy: boolean = true): Promise<{
+    entries: Array<{ timestamp: string; source: string; message: string; level: string; strategy?: string }>;
+    totalLines: number;
+    sources: string[];
+  }> {
+    const allLogs: Array<{ timestamp: string; source: string; message: string; level: string; strategy?: string }> = [];
+    const sources: string[] = [];
+    const normalizedAddress = walletAddress.toLowerCase().replace('eth|', '').replace('gala|', '');
+
+    try {
+      // 1. Multi-user wallet-specific logs
+      const multiUserLogPath = path.join(process.cwd(), 'logs', 'multi-user', `trades-${walletAddress}.log`);
+      if (await fs.pathExists(multiUserLogPath)) {
+        sources.push('multi-user-trades');
+        const content = await fs.readFile(multiUserLogPath, 'utf8');
+        const logLines = content.split('\n').filter(Boolean);
+
+        logLines.forEach(line => {
+          try {
+            const logEntry = JSON.parse(line);
+            allLogs.push({
+              timestamp: logEntry.timestamp || new Date().toISOString(),
+              source: 'multi-user-trades',
+              message: logEntry.message || line,
+              level: logEntry.level || 'info',
+              strategy: logEntry.strategy
+            });
+          } catch {
+            // Handle non-JSON log lines
+            allLogs.push({
+              timestamp: new Date().toISOString(),
+              source: 'multi-user-trades',
+              message: line,
+              level: 'info'
+            });
+          }
+        });
+      }
+
+      // 2. Get user's current strategy and its logs
+      if (includeStrategy) {
+        const userSession = this.multiUserStrategyManager.getUserStatus(walletAddress);
+        if (userSession && userSession.selectedStrategy) {
+          const strategyLogPath = path.join(process.cwd(), 'logs', `${userSession.selectedStrategy}.log`);
+          if (await fs.pathExists(strategyLogPath)) {
+            sources.push(`strategy-${userSession.selectedStrategy}`);
+            const content = await fs.readFile(strategyLogPath, 'utf8');
+            const logLines = content.split('\n').filter(Boolean).slice(-50); // Recent strategy logs
+
+            logLines.forEach(line => {
+              allLogs.push({
+                timestamp: new Date().toISOString(),
+                source: `strategy-${userSession.selectedStrategy}`,
+                message: line,
+                level: 'info',
+                strategy: userSession.selectedStrategy
+              });
+            });
+          }
+        }
+      }
+
+      // 3. General transaction logs that mention this wallet
+      if (await fs.pathExists(this.LOG_FILE_PATH)) {
+        sources.push('general-trades');
+        const content = await fs.readFile(this.LOG_FILE_PATH, 'utf8');
+        const logLines = content.split('\n').filter(Boolean);
+
+        logLines.forEach(line => {
+          // Check if log line contains wallet address (various formats)
+          if (line.toLowerCase().includes(normalizedAddress)) {
+            allLogs.push({
+              timestamp: new Date().toISOString(),
+              source: 'general-trades',
+              message: line,
+              level: 'info'
+            });
+          }
+        });
+      }
+
+      // 4. Check for strategy-specific directories
+      const logsDir = path.join(process.cwd(), 'logs');
+      const subdirs = ['enhanced-trend', 'conservative-fibonacci', 'multi-wallet'];
+
+      for (const subdir of subdirs) {
+        const subdirPath = path.join(logsDir, subdir);
+        if (await fs.pathExists(subdirPath)) {
+          try {
+            const files = await fs.readdir(subdirPath);
+            for (const file of files) {
+              if (file.includes(walletAddress) || file.includes(normalizedAddress)) {
+                sources.push(`${subdir}-${file}`);
+                const filePath = path.join(subdirPath, file);
+                const content = await fs.readFile(filePath, 'utf8');
+                const logLines = content.split('\n').filter(Boolean).slice(-20);
+
+                logLines.forEach(line => {
+                  allLogs.push({
+                    timestamp: new Date().toISOString(),
+                    source: `${subdir}-${file}`,
+                    message: line,
+                    level: 'info'
+                  });
+                });
+              }
+            }
+          } catch (error: any) {
+            console.log(`Could not read ${subdir} directory:`, error.message);
+          }
+        }
+      }
+
+      // Sort by timestamp and limit
+      allLogs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      const limitedLogs = allLogs.slice(0, lines);
+
+      return {
+        entries: limitedLogs,
+        totalLines: allLogs.length,
+        sources: [...new Set(sources)]
+      };
+
+    } catch (error) {
+      console.error('Error reading wallet logs:', error);
+      return {
+        entries: [],
+        totalLines: 0,
+        sources: []
+      };
     }
   }
 
@@ -2071,6 +2294,17 @@ class FafnirBotAPI {
         dockerCompose: null,
         configFile: 'src/trend-strategy.ts',
         supportedPairs: ['GALA/GUSDC']
+      },
+      {
+        id: 'fafnir-treasure-hoarder',
+        name: 'Fafnir Treasure Hoarder',
+        description: 'RSI + Bollinger Bands layered strategy with DEX-optimized parameters and confidence scoring',
+        status: 'active',
+        dockerCompose: 'docker-compose.fafnir-treasure-hoarder.yml',
+        configFile: 'src/strategies/fafnir-treasure-hoarder.ts',
+        supportedPairs: ['GALA/GUSDC', 'GALA/GUSDT', 'GUSDC/GWETH', 'GALA/GWETH'],
+        riskLevel: 'medium',
+        features: ['RSI Analysis', 'Bollinger Bands', 'Confidence Scoring', 'Squeeze Detection', 'Position Sizing']
       }
     ];
 

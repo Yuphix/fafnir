@@ -28,7 +28,7 @@
       "maxTradeSize": 100,
       "targetProfitability": 1.015,
       "priority": "HIGH",
-      "enabledStrategies": ["arbitrage", "fibonacci", "trend", "triangular", "liquidity-spider"]
+      "enabledStrategies": ["arbitrage", "fibonacci", "trend", "triangular", "liquidity-spider", "fafnir-treasure-hoarder"]
     },
     "GALA/GUSDT": {
       "tokenA": "GALA",
@@ -37,7 +37,7 @@
       "maxTradeSize": 1000,
       "targetProfitability": 1.015,
       "priority": "HIGH",
-      "enabledStrategies": ["liquidity-spider"]
+      "enabledStrategies": ["liquidity-spider", "fafnir-treasure-hoarder"]
     },
     "GUSDC/GUSDT": {
       "tokenA": "GUSDC",
@@ -64,7 +64,7 @@
       "maxTradeSize": 50,
       "targetProfitability": 1.015,
       "priority": "HIGH",
-      "enabledStrategies": ["arbitrage", "liquidity-spider"]
+      "enabledStrategies": ["arbitrage", "liquidity-spider", "fafnir-treasure-hoarder"]
     },
     "GUSDC/GWBTC": {
       "tokenA": "GUSDC",
@@ -87,10 +87,11 @@
     }
   },
   "strategySettings": {
-    "defaultStrategy": "liquidity-spider",
+    "defaultStrategy": "fafnir-treasure-hoarder",
     "strategySwitchInterval": 300000,
     "performanceTracking": true,
-    "competitionDetection": true
+    "competitionDetection": true,
+    "availableStrategies": ["arbitrage", "triangular", "fibonacci", "liquidity-spider", "enhanced-trend", "fafnir-treasure-hoarder"]
   },
   "milestoneSettings": {
     "enabled": false,

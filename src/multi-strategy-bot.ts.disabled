@@ -1,0 +1,239 @@
+import { FafnirBotAPI } from './api-server.js';
+import { StrategyManager } from './strategy-manager.js';
+import { configManager } from './config-manager.js';
+
+/**
+ * Multi-Strategy Bot - Unified API Server + Strategy Execution
+ *
+ * This combines the API server with strategy execution in a single container.
+ * The bot runs continuously with strategy switching capabilities while serving
+ * the full API for frontend integration.
+ */
+
+class MultiStrategyBot {
+  private apiServer: FafnirBotAPI;
+  private strategyManager: StrategyManager;
+  private isRunning: boolean = false;
+  private currentStrategy: string;
+  private availableStrategies: string[];
+  private switchInterval: number;
+  private intervalId?: NodeJS.Timeout;
+
+  constructor() {
+    // Initialize API server (includes multi-user support)
+    this.apiServer = new FafnirBotAPI(3000);
+
+    // Initialize strategy manager
+    this.strategyManager = new StrategyManager();
+
+    // Load configuration from environment
+    this.currentStrategy = process.env.DEFAULT_STRATEGY || 'fafnir-treasure-hoarder';
+    this.availableStrategies = process.env.AVAILABLE_STRATEGIES?.split(',') || [
+      'arbitrage',
+      'triangular',
+      'fibonacci',
+      'liquidity-spider',
+      'enhanced-trend',
+      'fafnir-treasure-hoarder'
+    ];
+    this.switchInterval = parseInt(process.env.STRATEGY_SWITCH_INTERVAL_MS || '300000'); // 5 minutes
+
+    console.log('🤖 Multi-Strategy Bot initialized');
+    console.log(`📊 Available strategies: ${this.availableStrategies.join(', ')}`);
+    console.log(`🎯 Current strategy: ${this.currentStrategy}`);
+    console.log(`⏰ Switch interval: ${this.switchInterval / 1000}s`);
+  }
+
+  async start() {
+    try {
+      // Start API server first
+      console.log('🚀 Starting API server...');
+      this.apiServer.start();
+
+      // Wait a moment for API server to initialize
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Start strategy execution
+      console.log('⚡ Starting strategy execution...');
+      await this.startStrategyExecution();
+
+      // Setup strategy switching if enabled
+      if (process.env.ENABLE_STRATEGY_SWITCHING === 'true') {
+        this.setupStrategySwitching();
+      }
+
+      this.isRunning = true;
+      console.log('✅ Multi-Strategy Bot is running!');
+      console.log(`🌐 API available at: http://localhost:3000`);
+      console.log(`🎮 Frontend can connect from: http://localhost:3001`);
+
+    } catch (error) {
+      console.error('❌ Failed to start Multi-Strategy Bot:', error);
+      process.exit(1);
+    }
+  }
+
+  private async startStrategyExecution() {
+    try {
+      // TODO: Adapt to current StrategyManager interface
+      // The current StrategyManager doesn't have setStrategy() or start() methods
+      // await this.strategyManager.setStrategy(this.currentStrategy);
+      // await this.strategyManager.start();
+
+      console.log(`🎯 Strategy "${this.currentStrategy}" configured (methods not implemented)`);
+    } catch (error) {
+      console.error(`❌ Failed to start strategy "${this.currentStrategy}":`, error);
+      throw error;
+    }
+  }
+
+  private setupStrategySwitching() {
+    console.log(`⏰ Setting up automatic strategy switching every ${this.switchInterval / 1000}s`);
+
+    this.intervalId = setInterval(async () => {
+      try {
+        await this.switchToNextStrategy();
+      } catch (error) {
+        console.error('❌ Error during strategy switch:', error);
+      }
+    }, this.switchInterval);
+  }
+
+  private async switchToNextStrategy() {
+    if (!this.isRunning) return;
+
+    // Get current strategy index
+    const currentIndex = this.availableStrategies.indexOf(this.currentStrategy);
+    const nextIndex = (currentIndex + 1) % this.availableStrategies.length;
+    const nextStrategy = this.availableStrategies[nextIndex];
+
+    console.log(`🔄 Switching strategy: ${this.currentStrategy} → ${nextStrategy}`);
+
+    try {
+      // Stop current strategy
+      await this.strategyManager.stop();
+
+      // Switch to next strategy
+      await this.strategyManager.setStrategy(nextStrategy);
+      await this.strategyManager.start();
+
+      this.currentStrategy = nextStrategy;
+      console.log(`✅ Successfully switched to strategy: ${nextStrategy}`);
+
+    } catch (error) {
+      console.error(`❌ Failed to switch to strategy "${nextStrategy}":`, error);
+      // Try to restart current strategy
+      try {
+        await this.strategyManager.start();
+      } catch (restartError) {
+        console.error('❌ Failed to restart current strategy:', restartError);
+      }
+    }
+  }
+
+  async stop() {
+    console.log('🛑 Stopping Multi-Strategy Bot...');
+
+    this.isRunning = false;
+
+    // Clear strategy switching interval
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+
+    // Stop strategy execution
+    try {
+      await this.strategyManager.stop();
+    } catch (error) {
+      console.error('❌ Error stopping strategy manager:', error);
+    }
+
+    // Stop API server
+    try {
+      this.apiServer.stop();
+    } catch (error) {
+      console.error('❌ Error stopping API server:', error);
+    }
+
+    console.log('✅ Multi-Strategy Bot stopped');
+  }
+
+  // Expose methods for API server integration
+  getCurrentStrategy(): string {
+    return this.currentStrategy;
+  }
+
+  getAvailableStrategies(): string[] {
+    return this.availableStrategies;
+  }
+
+  async switchStrategy(strategy: string): Promise<boolean> {
+    if (!this.availableStrategies.includes(strategy)) {
+      throw new Error(`Strategy "${strategy}" not available. Available: ${this.availableStrategies.join(', ')}`);
+    }
+
+    if (strategy === this.currentStrategy) {
+      console.log(`🎯 Strategy "${strategy}" is already active`);
+      return true;
+    }
+
+    console.log(`🔄 Manual strategy switch: ${this.currentStrategy} → ${strategy}`);
+
+    try {
+      await this.strategyManager.stop();
+      await this.strategyManager.setStrategy(strategy);
+      await this.strategyManager.start();
+
+      this.currentStrategy = strategy;
+      console.log(`✅ Successfully switched to strategy: ${strategy}`);
+      return true;
+
+    } catch (error) {
+      console.error(`❌ Failed to switch to strategy "${strategy}":`, error);
+      // Try to restart previous strategy
+      try {
+        await this.strategyManager.setStrategy(this.currentStrategy);
+        await this.strategyManager.start();
+      } catch (restartError) {
+        console.error('❌ Failed to restart previous strategy:', restartError);
+      }
+      return false;
+    }
+  }
+
+  getStatus() {
+    return {
+      isRunning: this.isRunning,
+      currentStrategy: this.currentStrategy,
+      availableStrategies: this.availableStrategies,
+      switchInterval: this.switchInterval,
+      autoSwitching: process.env.ENABLE_STRATEGY_SWITCHING === 'true'
+    };
+  }
+}
+
+// Create and start the bot
+const multiStrategyBot = new MultiStrategyBot();
+
+// Handle graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('📡 Received SIGTERM signal');
+  await multiStrategyBot.stop();
+  process.exit(0);
+});
+
+process.on('SIGINT', async () => {
+  console.log('📡 Received SIGINT signal');
+  await multiStrategyBot.stop();
+  process.exit(0);
+});
+
+// Start the bot
+multiStrategyBot.start().catch((error) => {
+  console.error('💥 Fatal error:', error);
+  process.exit(1);
+});
+
+// Export for potential external use
+export { MultiStrategyBot };
+export default multiStrategyBot;

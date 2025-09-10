@@ -264,18 +264,33 @@ export class SecurityManager {
     return {
       origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
         // Allow requests with no origin (mobile apps, Postman, etc.)
-        if (!origin) return callback(null, true);
+        if (!origin) {
+          console.log(`✅ CORS allowed: request with no origin`);
+          return callback(null, true);
+        }
+
+        console.log(`🔍 CORS checking origin: ${origin}`);
+        console.log(`📋 Allowed origins: ${this.config.corsOrigins.join(', ')}`);
 
         if (this.config.corsOrigins.includes(origin)) {
+          console.log(`✅ CORS allowed: ${origin}`);
           callback(null, true);
         } else {
           console.warn(`🚨 CORS blocked origin: ${origin}`);
+          console.warn(`📋 Allowed origins are: ${this.config.corsOrigins.join(', ')}`);
           callback(new Error('Not allowed by CORS'), false);
         }
       },
       credentials: true,
-      optionsSuccessStatus: 200
+      optionsSuccessStatus: 200,
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'X-Requested-With'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     };
+  }
+
+  // Get CORS origins for debugging
+  getCorsOrigins(): string[] {
+    return this.config.corsOrigins;
   }
 
   // WebSocket authentication

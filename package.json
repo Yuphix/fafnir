@@ -6,6 +6,7 @@
   "scripts": {
     "start": "tsx src/fafnir-bot.ts",
     "start:enhanced": "tsx src/fafnir-bot-enhanced.ts",
+    "start:multi-strategy": "tsx src/fafnir-multi-strategy-bot.ts",
     "dry-run": "tsx src/dry-run.ts",
     "start:trend": "tsx src/trend-strategy.ts",
     "test:strategies": "tsx src/test-strategies.ts",

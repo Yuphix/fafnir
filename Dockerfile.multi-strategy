@@ -1,0 +1,41 @@
+# Multi-Strategy Fafnir Bot Dockerfile
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    curl \
+    && rm -rf /var/cache/apk/*
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p logs/multi-strategy data/strategies
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S fafnir -u 1001
+RUN chown -R fafnir:nodejs /app
+USER fafnir
+
+# Expose bot API port
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3001/api/bot/status || exit 1
+
+# Start the multi-strategy bot
+CMD ["npm", "run", "start:multi-strategy"]

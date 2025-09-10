@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  # Multi-Strategy Fafnir Bot - Always Active with API Server
+  fafnir-multi-strategy:
+    build:
+      context: .
+      dockerfile: Dockerfile.multi-strategy
+    container_name: fafnir-multi-strategy-bot
+    ports:
+      - "3000:3000"  # Unified API + Bot port
+    environment:
+      # Wallet Configuration
+      - GALACHAIN_PRIVATE_KEY=${GALACHAIN_PRIVATE_KEY}
+      - GALACHAIN_WALLET_ADDRESS=${GALACHAIN_WALLET_ADDRESS}
+      - GALACHAIN_RPC_URL=${GALACHAIN_RPC_URL:-https://galachain-rpc.gala.com}
+      - GALASWAP_API_URL=${GALASWAP_API_URL:-https://api.galaswap.gala.com}
+
+      # Multi-Strategy Configuration
+      - ENABLE_MULTI_STRATEGY=true
+      - DEFAULT_STRATEGY=fafnir-treasure-hoarder
+      - STRATEGY_SWITCH_INTERVAL_MS=300000     # 5 minutes
+      - ENABLE_STRATEGY_SWITCHING=true
+      - ENABLE_FRONTEND_CONTROL=true
+
+      # Available Strategies (comma-separated)
+      - AVAILABLE_STRATEGIES=arbitrage,triangular,fibonacci,liquidity-spider,enhanced-trend,fafnir-treasure-hoarder
+
+      # Trading Parameters
+      - DRY_RUN=false                          # Live trading
+      - MIN_TRADE_AMOUNT=10                    # Minimum $10 trades
+      - MAX_TRADE_AMOUNT=1000                  # Maximum $1000 trades
+      - SLIPPAGE_BPS=100                       # 1% slippage tolerance
+      - MAX_CONCURRENT_TRADES=3                # Max 3 trades at once
+
+      # Risk Management
+      - MAX_DAILY_LOSS=50                      # Max $50 daily loss
+      - MAX_POSITION_SIZE=100                  # Max $100 per position
+      - STOP_LOSS_THRESHOLD=10                 # 10% stop loss
+      - DAILY_VOLUME_LIMIT=1000               # Max $1000 daily volume
+
+      # API Configuration
+      - API_PORT=3000                          # Unified API port
+      - ENABLE_API_SERVER=true                 # Enable full API server
+      - CORS_ORIGINS=http://localhost:3001,http://localhost:3000,https://yuphix.io
+
+      # Logging
+      - LOG_LEVEL=info
+      - NODE_ENV=production
+      - NODE_OPTIONS=--max-old-space-size=512
+
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./.env:/app/.env:ro
+    restart: unless-stopped
+    networks:
+      - fafnir-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/bot/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # API Server (for frontend communication)
+  fafnir-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: fafnir-api-server
+    ports:
+      - "3000:3000"  # API server port
+    environment:
+      - NODE_ENV=production
+      - API_PORT=3000
+      - CORS_ORIGINS=https://yuphix.io,http://localhost:3000,http://localhost:3001,http://localhost:8080,http://127.0.0.1:3000,http://127.0.0.1:3001,http://127.0.0.1:8080
+      - MULTI_STRATEGY_BOT_URL=http://fafnir-multi-strategy:3001
+      - ENABLE_MULTI_USER=true
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    restart: unless-stopped
+    depends_on:
+      - fafnir-multi-strategy
+    networks:
+      - fafnir-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/dashboard"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  fafnir-network:
+    driver: bridge
+
+volumes:
+  fafnir-logs:
+  fafnir-data:
