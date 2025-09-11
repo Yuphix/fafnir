@@ -5,6 +5,7 @@ import { ArbitrageStrategy } from './strategies/arbitrage-strategy.js';
 import { LiquiditySpiderStrategy } from './strategies/liquidity-spider-strategy.js';
 import { FafnirTreasureHoarder } from './strategies/fafnir-treasure-hoarder.js';
 import { EnhancedTrendStrategy } from './enhanced-trend-strategy.js';
+import { TestStrategy } from './strategies/test-strategy.js';
 import fs from 'fs-extra';
 import path from 'node:path';
 
@@ -108,6 +109,7 @@ export class MultiUserStrategyManager {
     this.availableStrategies.set('liquidity-spider', LiquiditySpiderStrategy as any);
     this.availableStrategies.set('enhanced-trend', EnhancedTrendStrategy as any);
     this.availableStrategies.set('fafnir-treasure-hoarder', FafnirTreasureHoarder as any);
+    this.availableStrategies.set('test-strategy', TestStrategy as any);
   }
 
   /**
