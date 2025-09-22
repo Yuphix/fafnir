@@ -6,11 +6,11 @@ import { GalaChainSwapAuth } from '../galachain-swap-auth.js';
 
 /**
  * Test Strategy for Logging Refinement
- * 
+ *
  * Simple strategy that:
  * 1. Buys $1 worth of GALA with GUSDC every 15 minutes
  * 2. Sells it back to GUSDC 5 minutes later
- * 
+ *
  * Purpose: Testing and logging system refinement
  */
 export class TestStrategy implements TradingStrategy {
@@ -21,14 +21,13 @@ export class TestStrategy implements TradingStrategy {
   private gswap: GSwap;
   private swapAuth: GalaChainSwapAuth;
   private wallet: string | undefined;
-  private dryRun: boolean;
-  
+
   // Test strategy specific settings
   private readonly TEST_AMOUNT_USD = 1.0; // $1 worth of trades
   private readonly BUY_INTERVAL_MS = 15 * 60 * 1000; // 15 minutes
   private readonly SELL_DELAY_MS = 5 * 60 * 1000; // 5 minutes after buy
   private readonly TARGET_PAIR = 'GALA/GUSDC';
-  
+
   // Tracking
   private lastBuyTime: number = 0;
   private pendingSells: Array<{
@@ -41,7 +40,7 @@ export class TestStrategy implements TradingStrategy {
 
   constructor(walletAddress?: string) {
     this.wallet = walletAddress || process.env.GALACHAIN_WALLET_ADDRESS || process.env.GSWAP_WALLET || process.env.GSWAP_WALLET_ADDRESS;
-    
+
     // Initialize GSwap client
     const gatewayUrl = process.env.GSWAP_GATEWAY_URL || 'https://gateway-mainnet.galachain.com';
     const dexBackendUrl = process.env.GSWAP_DEX_BACKEND_URL || 'https://dex-backend-prod1.defi.gala.com';
@@ -59,11 +58,9 @@ export class TestStrategy implements TradingStrategy {
     // Initialize swap authorization
     this.swapAuth = new GalaChainSwapAuth();
 
-    // Test mode - always dry run unless explicitly disabled
-    this.dryRun = String(process.env.TEST_STRATEGY_DRY_RUN || 'true').toLowerCase() !== 'false';
-
-    console.log(`🧪 Test Strategy initialized for logging refinement`);
-    console.log(`💰 Test amount: $${this.TEST_AMOUNT_USD} | Pair: ${this.TARGET_PAIR} | Dry run: ${this.dryRun}`);
+    // Real trading mode - live trades enabled
+    console.log(`🧪 Test Strategy initialized for REAL TRADING`);
+    console.log(`💰 Test amount: $${this.TEST_AMOUNT_USD} | Pair: ${this.TARGET_PAIR} | Live trading: ENABLED`);
     console.log(`⏱️ Buy interval: ${this.BUY_INTERVAL_MS / 1000 / 60} minutes | Sell delay: ${this.SELL_DELAY_MS / 1000 / 60} minutes`);
   }
 
@@ -116,26 +113,19 @@ export class TestStrategy implements TradingStrategy {
       const priceData = await this.getGalaPrice();
       const galaAmount = (this.TEST_AMOUNT_USD / priceData.price).toFixed(6);
 
-      await this.logInfo('executeBuy', 'Price data retrieved', { 
-        tradeId, 
-        galaPrice: priceData.price, 
+      await this.logInfo('executeBuy', 'Price data retrieved', {
+        tradeId,
+        galaPrice: priceData.price,
         galaAmount,
-        usdcAmount: this.TEST_AMOUNT_USD 
+        usdcAmount: this.TEST_AMOUNT_USD
       });
 
-      if (this.dryRun) {
-        await this.logInfo('executeBuy', 'DRY RUN: Simulating GUSDC -> GALA swap', { 
-          tradeId,
-          symbolIn: 'GUSDC',
-          symbolOut: 'GALA',
-          amountIn: this.TEST_AMOUNT_USD,
-          expectedAmountOut: galaAmount
-        });
-      } else {
-        // Execute actual swap: GUSDC -> GALA
-        const swapResult = await this.executeSwap('GUSDC', 'GALA', this.TEST_AMOUNT_USD.toString());
-        await this.logInfo('executeBuy', 'Real swap executed', { tradeId, swapResult });
-      }
+      // Execute real swap: GUSDC -> GALA using proven working method
+      const swapResult = await this.swapAuth.buyGALAWithGUSDC(
+        this.TEST_AMOUNT_USD.toString(),
+        100 // 1% slippage in basis points
+      );
+      await this.logInfo('executeBuy', 'Real swap executed', { tradeId, swapResult });
 
       // Schedule the sell
       const sellTime = now + this.SELL_DELAY_MS;
@@ -148,8 +138,8 @@ export class TestStrategy implements TradingStrategy {
 
       this.lastBuyTime = now;
 
-      await this.logInfo('executeBuy', 'Buy completed, sell scheduled', { 
-        tradeId, 
+      await this.logInfo('executeBuy', 'Buy completed, sell scheduled', {
+        tradeId,
         sellScheduledAt: new Date(sellTime).toISOString(),
         pendingSellsCount: this.pendingSells.length
       });
@@ -160,7 +150,9 @@ export class TestStrategy implements TradingStrategy {
         volume: this.TEST_AMOUNT_USD,
         strategy: this.name,
         pool: this.TARGET_PAIR,
-        timestamp: now
+        timestamp: now,
+        transactionId: swapResult?.transactionId,
+        transactionHash: swapResult?.transactionHash
       };
 
     } catch (error: any) {
@@ -175,17 +167,22 @@ export class TestStrategy implements TradingStrategy {
 
     for (const sellOrder of readyToSell) {
       try {
-        await this.executeSell(sellOrder, now);
+        const sellResult = await this.executeSell(sellOrder, now);
         // Remove from pending sells
         this.pendingSells = this.pendingSells.filter(s => s.tradeId !== sellOrder.tradeId);
+        await this.logInfo('processPendingSells', 'Sell order completed', {
+          tradeId: sellOrder.tradeId,
+          profit: sellResult.profit.toFixed(6),
+          transactionId: sellResult.transactionId
+        });
       } catch (error: any) {
         await this.logError('processPendingSells', error, { tradeId: sellOrder.tradeId });
       }
     }
   }
 
-  private async executeSell(sellOrder: any, now: number): Promise<void> {
-    await this.logInfo('executeSell', 'Starting sell operation', { 
+  private async executeSell(sellOrder: any, now: number): Promise<TradeResult> {
+    await this.logInfo('executeSell', 'Starting sell operation', {
       tradeId: sellOrder.tradeId,
       galaAmount: sellOrder.amount,
       originalBuyPrice: sellOrder.buyPrice
@@ -195,41 +192,47 @@ export class TestStrategy implements TradingStrategy {
       // Get current GALA price
       const currentPriceData = await this.getGalaPrice();
       const expectedUsdcAmount = (parseFloat(sellOrder.amount) * currentPriceData.price).toFixed(6);
-      const profit = (parseFloat(expectedUsdcAmount) - this.TEST_AMOUNT_USD).toFixed(6);
+      const profit = parseFloat(expectedUsdcAmount) - this.TEST_AMOUNT_USD;
 
-      await this.logInfo('executeSell', 'Current price data for sell', { 
+      await this.logInfo('executeSell', 'Current price data for sell', {
         tradeId: sellOrder.tradeId,
         currentPrice: currentPriceData.price,
         buyPrice: sellOrder.buyPrice,
         priceChange: ((currentPriceData.price - sellOrder.buyPrice) / sellOrder.buyPrice * 100).toFixed(2) + '%',
         expectedUsdcAmount,
-        estimatedProfit: profit
+        estimatedProfit: profit.toFixed(6)
       });
 
-      if (this.dryRun) {
-        await this.logInfo('executeSell', 'DRY RUN: Simulating GALA -> GUSDC swap', { 
-          tradeId: sellOrder.tradeId,
-          symbolIn: 'GALA',
-          symbolOut: 'GUSDC',
-          amountIn: sellOrder.amount,
-          expectedAmountOut: expectedUsdcAmount,
-          estimatedProfit: profit
-        });
-      } else {
-        // Execute actual swap: GALA -> GUSDC
-        const swapResult = await this.executeSwap('GALA', 'GUSDC', sellOrder.amount);
-        await this.logInfo('executeSell', 'Real sell swap executed', { 
-          tradeId: sellOrder.tradeId, 
-          swapResult,
-          actualProfit: 'TBD from swap result'
-        });
-      }
-
-      await this.logInfo('executeSell', 'Sell completed - trade cycle finished', { 
+      // Execute real swap: GALA -> GUSDC using proven working method
+      const swapResult = await this.swapAuth.sellGALAForGUSDC(
+        sellOrder.amount,
+        100 // 1% slippage in basis points
+      );
+      await this.logInfo('executeSell', 'Real sell swap executed', {
         tradeId: sellOrder.tradeId,
-        cycleProfit: profit,
-        totalCycleTime: `${(now - (sellOrder.sellTime - this.SELL_DELAY_MS)) / 1000 / 60} minutes`
+        swapResult,
+        actualProfit: 'TBD from swap result'
       });
+
+      await this.logInfo('executeSell', 'Sell completed - trade cycle finished', {
+        tradeId: sellOrder.tradeId,
+        cycleProfit: profit.toFixed(6),
+        totalCycleTime: `${(now - (sellOrder.sellTime - this.SELL_DELAY_MS)) / 1000 / 60} minutes`,
+        sellTransactionId: swapResult?.transactionId,
+        sellTransactionHash: swapResult?.transactionId
+      });
+
+      // Return sell trade info for potential broadcasting
+      return {
+        success: true,
+        profit,
+        volume: sellOrder.amount,
+        strategy: this.name,
+        pool: this.TARGET_PAIR,
+        timestamp: now,
+        transactionId: swapResult?.transactionId,
+        transactionHash: swapResult?.transactionHash
+      };
 
     } catch (error: any) {
       await this.logError('executeSell', error, { tradeId: sellOrder.tradeId });
@@ -239,18 +242,18 @@ export class TestStrategy implements TradingStrategy {
 
   private async getGalaPrice(): Promise<{ price: number; timestamp: number }> {
     try {
-      // Get price from GSwap quote using correct API
+      // Get price from GSwap quote using correct token class format
       const quote = await this.gswap.quoting.quoteExactInput(
-        'GUSDC',
-        'GALA', 
+        'GUSDC|Unit|none|none',  // Fixed token class format
+        'GALA|Unit|none|none',   // Fixed token class format
         '1', // 1 GUSDC
         3000 // Standard fee tier
       );
 
       const outAmount = Number((quote as any).outTokenAmount?.toString?.() ?? quote.outTokenAmount);
       const price = 1 / outAmount;
-      
-      await this.logInfo('getGalaPrice', 'Price retrieved', { 
+
+      await this.logInfo('getGalaPrice', 'Price retrieved', {
         galaPrice: price,
         quoteAmountOut: outAmount,
         source: 'GSwap quoting.quoteExactInput'
@@ -263,52 +266,6 @@ export class TestStrategy implements TradingStrategy {
     } catch (error: any) {
       await this.logError('getGalaPrice', error, {});
       throw new Error(`Failed to get GALA price: ${error.message}`);
-    }
-  }
-
-  private async executeSwap(symbolIn: string, symbolOut: string, amountIn: string): Promise<any> {
-    try {
-      await this.logInfo('executeSwap', 'Starting swap execution', { symbolIn, symbolOut, amountIn });
-
-      // Get quote first using correct API
-      const quote = await this.gswap.quoting.quoteExactInput(
-        symbolIn,
-        symbolOut,
-        amountIn,
-        3000 // Standard fee tier
-      );
-
-      const outAmount = Number((quote as any).outTokenAmount?.toString?.() ?? quote.outTokenAmount);
-      const amountOutMinimum = (outAmount * 0.99).toString(); // 1% slippage
-
-      await this.logInfo('executeSwap', 'Quote received', { 
-        amountOut: outAmount,
-        amountOutMinimum,
-        feeTier: 3000
-      });
-
-      // Execute swap using swapAuth.executeSwap pattern from other strategies
-      const swapResult = await this.swapAuth.executeSwap({
-        tokenIn: symbolIn,
-        tokenOut: symbolOut,
-        amountIn: amountIn,
-        amountOutMinimum: amountOutMinimum,
-        feeTier: 3000,
-        recipient: this.wallet!,
-        slippageBps: 100 // 1% slippage for test trades
-      });
-
-      await this.logInfo('executeSwap', 'Swap executed', { 
-        success: swapResult.success,
-        transactionId: swapResult.transactionId,
-        actualAmountOut: swapResult.actualAmountOut
-      });
-
-      return swapResult;
-
-    } catch (error: any) {
-      await this.logError('executeSwap', error, { symbolIn, symbolOut, amountIn });
-      throw error;
     }
   }
 
@@ -327,7 +284,7 @@ export class TestStrategy implements TradingStrategy {
       message,
       data,
       wallet: this.wallet,
-      dryRun: this.dryRun
+      liveTrading: true
     };
 
     console.log(`🧪 [TEST-STRATEGY:${method}] ${message}`, data);
@@ -344,7 +301,7 @@ export class TestStrategy implements TradingStrategy {
       stack: error.stack,
       context,
       wallet: this.wallet,
-      dryRun: this.dryRun
+      liveTrading: true
     };
 
     console.error(`🚨 [TEST-STRATEGY:${method}] ERROR:`, error.message, context);
@@ -355,10 +312,10 @@ export class TestStrategy implements TradingStrategy {
     try {
       const logDir = path.join(process.cwd(), 'logs', 'test-strategy');
       await fs.ensureDir(logDir);
-      
+
       const logFile = path.join(logDir, filename);
       const logLine = JSON.stringify(logEntry) + '\n';
-      
+
       await fs.appendFile(logFile, logLine);
     } catch (error) {
       console.error('Failed to write to log file:', error);
@@ -373,7 +330,7 @@ export class TestStrategy implements TradingStrategy {
       pendingSells: this.pendingSells.length,
       nextBuyIn: this.lastBuyTime ? Math.max(0, this.BUY_INTERVAL_MS - (Date.now() - this.lastBuyTime)) : 0,
       tradeCounter: this.tradeCounter,
-      dryRun: this.dryRun,
+      liveTrading: true,
       testAmount: this.TEST_AMOUNT_USD,
       targetPair: this.TARGET_PAIR
     };

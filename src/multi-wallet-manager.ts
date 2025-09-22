@@ -543,7 +543,8 @@ export class MultiWalletManager {
     this.tradeHistory.set(trade.walletAddress, userTrades);
 
     // Log to file
-    const logFile = path.join(this.logDir, `${trade.walletAddress}-trades.log`);
+    const sanitizedAddress = trade.walletAddress.replace(/\|/g, '_');
+    const logFile = path.join(this.logDir, `${sanitizedAddress}-trades.log`);
     await fs.appendFile(logFile, JSON.stringify(tradeLog) + '\n');
   }
 

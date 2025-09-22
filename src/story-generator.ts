@@ -377,10 +377,19 @@ export class BackendStoryGenerator {
   }
 
   /**
+   * Sanitize wallet address for use in Windows filenames
+   * Replaces pipe characters (|) with underscores (_) to match trade file naming convention
+   */
+  private sanitizeWalletAddress(walletAddress: string): string {
+    return walletAddress.replace(/\|/g, '_');
+  }
+
+  /**
    * Get wallet-specific story data
    */
   private async getWalletStoryData(walletAddress: string): Promise<WalletStoryData> {
-    const walletFile = path.join(this.walletsDir, `${walletAddress}.json`);
+    const sanitizedAddress = this.sanitizeWalletAddress(walletAddress);
+    const walletFile = path.join(this.walletsDir, `${sanitizedAddress}.json`);
 
     if (await fs.pathExists(walletFile)) {
       const data = await fs.readJson(walletFile);
@@ -434,7 +443,8 @@ export class BackendStoryGenerator {
       }
 
       // Check user-specific trade log
-      const userTradeFile = path.join(process.cwd(), 'logs', 'multi-user', `trades-${walletAddress}.log`);
+      const sanitizedAddress = this.sanitizeWalletAddress(walletAddress);
+      const userTradeFile = path.join(process.cwd(), 'logs', 'multi-user', `trades-${sanitizedAddress}.log`);
       if (await fs.pathExists(userTradeFile)) {
         const content = await fs.readFile(userTradeFile, 'utf8');
         const lines = content.split('\n').filter(Boolean);
@@ -606,7 +616,8 @@ export class BackendStoryGenerator {
    * Save wallet story data to file
    */
   private async saveWalletStoryData(walletAddress: string, data: WalletStoryData): Promise<void> {
-    const walletFile = path.join(this.walletsDir, `${walletAddress}.json`);
+    const sanitizedAddress = this.sanitizeWalletAddress(walletAddress);
+    const walletFile = path.join(this.walletsDir, `${sanitizedAddress}.json`);
     await fs.writeJson(walletFile, data, { spaces: 2 });
   }
 

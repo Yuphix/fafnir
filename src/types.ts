@@ -25,6 +25,8 @@ export interface TradeResult {
   pool: string;
   timestamp: number;
   error?: string;
+  transactionId?: string;
+  transactionHash?: string;
 }
 
 export interface PerformanceMetrics {

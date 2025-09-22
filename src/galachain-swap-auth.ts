@@ -25,6 +25,7 @@ export interface SwapParams {
 export interface SwapResult {
   success: boolean;
   transactionId?: string;
+  transactionHash?: string;
   error?: string;
   actualAmountOut?: string;
   gasUsed?: string;
@@ -208,7 +209,7 @@ export class GalaChainSwapAuth {
         success: true,
         actualAmountOut: undefined, // Would need additional parsing from transaction receipt
         gasUsed: undefined,
-        transactionHash: confirmationResult?.transactionHash || 'pending-confirmation'
+        transactionHash: confirmationResult?.transactionHash // Don't use fallback that creates invalid GalaScan URLs
       };
 
       // Log the successful transaction
@@ -219,7 +220,7 @@ export class GalaChainSwapAuth {
         tokenIn: params.tokenIn,
         tokenOut: params.tokenOut,
         amountIn: params.amountIn,
-        amountOut: result.actualAmountOut || 'pending',
+        amountOut: result.actualAmountOut || `~${quotedOutput.toString()}`,
         quotedAmountOut: quotedOutput.toString(),
         slippageBps: params.slippageBps || 100,
         actualSlippage: result.actualAmountOut ?
@@ -236,6 +237,7 @@ export class GalaChainSwapAuth {
       return {
         success: result.success,
         transactionId: pendingTransaction.transactionId,
+        transactionHash: result.transactionHash,
         actualAmountOut: result.actualAmountOut,
         gasUsed: result.gasUsed
       };

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Test Strategy Runner
- * 
+ *
  * Runs only the test strategy for logging refinement and testing purposes.
  * This script will:
  * 1. Initialize the test strategy
@@ -19,7 +19,7 @@ async function runTestStrategy() {
 
   // Initialize test strategy
   const testStrategy = new TestStrategy();
-  
+
   // Create mock market condition (test strategy has very low requirements)
   const mockMarketCondition: MarketCondition = {
     volatility: 0.5,
@@ -38,7 +38,7 @@ async function runTestStrategy() {
   async function executeTestCycle() {
     executionCount++;
     const cycleStart = Date.now();
-    
+
     console.log(`🔄 Test Cycle #${executionCount} - ${new Date().toISOString()}`);
     console.log('-'.repeat(50));
 
@@ -51,7 +51,7 @@ async function runTestStrategy() {
         // Execute the strategy
         console.log(`   🚀 Executing test strategy...`);
         const result = await testStrategy.execute();
-        
+
         console.log(`   📈 Execution result:`, {
           success: result.success,
           profit: result.profit,
@@ -88,7 +88,7 @@ async function runTestStrategy() {
   process.on('SIGINT', () => {
     console.log('\n🛑 Shutdown signal received');
     clearInterval(intervalId);
-    
+
     const totalRuntime = Date.now() - startTime;
     console.log(`📊 Test Strategy Runner Summary:`);
     console.log(`   • Total runtime: ${(totalRuntime / 1000 / 60).toFixed(1)} minutes`);

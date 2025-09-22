@@ -10,6 +10,8 @@ import { securityManager } from './security-manager.js';
 import { MultiWalletManager } from './multi-wallet-manager-simple.js';
 import { MultiUserStrategyManager } from './multi-user-strategy-manager.js';
 import { BackendStoryGenerator } from './story-generator.js';
+import { TradeDataService, TradeHistoryRequest, TradeExportRequest } from './trade-data-service.js';
+import { PositionTracker, PositionRequest } from './position-tracker.js';
 import { ethers } from 'ethers';
 import crypto from 'crypto';
 
@@ -90,6 +92,8 @@ class FafnirBotAPI {
   private multiWalletManager: MultiWalletManager;
   private multiUserStrategyManager: MultiUserStrategyManager;
   private storyGenerator: BackendStoryGenerator;
+  private tradeDataService: TradeDataService;
+  private positionTracker: PositionTracker;
   private addressMappings: Map<string, string> = new Map(); // ethereum -> galachain
 
   // File paths
@@ -105,6 +109,8 @@ class FafnirBotAPI {
     this.multiWalletManager = new MultiWalletManager();
     this.multiUserStrategyManager = new MultiUserStrategyManager();
     this.storyGenerator = new BackendStoryGenerator();
+    this.tradeDataService = new TradeDataService();
+    this.positionTracker = new PositionTracker();
 
     // Load existing address mappings
     this.loadAddressMappings();
@@ -115,6 +121,11 @@ class FafnirBotAPI {
     // Connect multi-user strategy manager for real-time updates
     this.multiUserStrategyManager.setBroadcastCallback((update) => {
       this.broadcastStrategyUpdate.call(this, update);
+    });
+
+    // Connect trade execution broadcasting
+    this.multiUserStrategyManager.setTradeExecutionBroadcast(async (tradeEvent) => {
+      await this.broadcastTradeExecution.call(this, tradeEvent);
     });
 
     // Connect story generator Oracle system for real-time updates
@@ -644,7 +655,8 @@ class FafnirBotAPI {
 
         // Read user's trade log file
         const logDir = path.join(process.cwd(), 'logs', 'multi-user');
-        const tradeFile = path.join(logDir, `trades-${address}.log`);
+        const sanitizedAddress = address.replace(/\|/g, '_');
+        const tradeFile = path.join(logDir, `trades-${sanitizedAddress}.log`);
 
         if (!await fs.pathExists(tradeFile)) {
           return this.sendResponse(res, { trades: [], totalTrades: 0 });
@@ -1330,6 +1342,52 @@ class FafnirBotAPI {
         this.sendError(res, error.message, 500);
       }
     });
+
+    // Trade export file serving endpoint
+    this.app.get('/api/exports/:filename', async (req: Request, res: Response) => {
+      try {
+        const { filename } = req.params;
+        const exportsDir = path.join(process.cwd(), 'exports');
+        const filePath = path.join(exportsDir, filename);
+
+        // Security check: ensure file is in exports directory
+        if (!filePath.startsWith(exportsDir)) {
+          return this.sendError(res, 'Invalid file path', 400);
+        }
+
+        // Check if file exists
+        if (!await fs.pathExists(filePath)) {
+          return this.sendError(res, 'File not found', 404);
+        }
+
+        // Get file stats
+        const stats = await fs.stat(filePath);
+
+        // Set appropriate headers based on file extension
+        const ext = path.extname(filename).toLowerCase();
+        const mimeTypes: { [key: string]: string } = {
+          '.csv': 'text/csv',
+          '.json': 'application/json',
+          '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        };
+
+        const mimeType = mimeTypes[ext] || 'application/octet-stream';
+
+        res.setHeader('Content-Type', mimeType);
+        res.setHeader('Content-Length', stats.size);
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+        // Stream the file
+        const fileStream = fs.createReadStream(filePath);
+        fileStream.pipe(res);
+
+        console.log(`📤 Export file served: ${filename} (${stats.size} bytes)`);
+
+      } catch (error: any) {
+        console.error('❌ Export file serving error:', error);
+        this.sendError(res, error.message, 500);
+      }
+    });
   }
 
     private setupWebSocket() {
@@ -1647,7 +1705,8 @@ class FafnirBotAPI {
 
     try {
       // 1. Multi-user wallet-specific logs
-      const multiUserLogPath = path.join(process.cwd(), 'logs', 'multi-user', `trades-${walletAddress}.log`);
+      const sanitizedAddress = walletAddress.replace(/\|/g, '_');
+      const multiUserLogPath = path.join(process.cwd(), 'logs', 'multi-user', `trades-${sanitizedAddress}.log`);
       if (await fs.pathExists(multiUserLogPath)) {
         sources.push('multi-user-trades');
         const content = await fs.readFile(multiUserLogPath, 'utf8');
@@ -2305,6 +2364,17 @@ class FafnirBotAPI {
         supportedPairs: ['GALA/GUSDC', 'GALA/GUSDT', 'GUSDC/GWETH', 'GALA/GWETH'],
         riskLevel: 'medium',
         features: ['RSI Analysis', 'Bollinger Bands', 'Confidence Scoring', 'Squeeze Detection', 'Position Sizing']
+      },
+      {
+        id: 'test-strategy',
+        name: 'Test Strategy',
+        description: 'Simple test strategy for logging refinement - buys $1 GALA every 15 min, sells after 5 min',
+        status: 'active',
+        dockerCompose: null,
+        configFile: 'src/strategies/test-strategy.ts',
+        supportedPairs: ['GALA/GUSDC'],
+        riskLevel: 'low',
+        features: ['Enhanced Logging', 'Predictable Trades', 'Testing Framework', 'Low Risk']
       }
     ];
 
@@ -2747,10 +2817,28 @@ class FafnirBotAPI {
 
         case 'start_strategy':
           try {
-            const result = await this.startStrategy(data.strategyId);
+            const walletAddress = (ws as any).walletAddress;
+            if (!walletAddress) {
+              ws.send(JSON.stringify({
+                type: 'error',
+                message: 'Wallet authentication required to start strategy',
+                timestamp: new Date().toISOString()
+              }));
+              break;
+            }
+
+            const session = await this.multiUserStrategyManager.assignStrategy({
+              walletAddress,
+              strategy: data.strategyId
+            });
+
             ws.send(JSON.stringify({
               type: 'strategy_result',
-              data: result,
+              data: {
+                success: true,
+                session,
+                message: `Strategy ${data.strategyId} started for ${walletAddress}`
+              },
               timestamp: new Date().toISOString()
             }));
             this.broadcastStrategyChange('started', data.strategyId);
@@ -2765,10 +2853,23 @@ class FafnirBotAPI {
 
         case 'stop_strategy':
           try {
-            const result = await this.stopStrategy(data.strategyId);
+            const walletAddress = (ws as any).walletAddress;
+            if (!walletAddress) {
+              ws.send(JSON.stringify({
+                type: 'error',
+                message: 'Wallet authentication required to stop strategy',
+                timestamp: new Date().toISOString()
+              }));
+              break;
+            }
+
+            const result = await this.multiUserStrategyManager.stopUserStrategy(walletAddress);
             ws.send(JSON.stringify({
               type: 'strategy_result',
-              data: result,
+              data: {
+                success: result,
+                message: result ? 'Strategy stopped successfully' : 'No active strategy to stop'
+              },
               timestamp: new Date().toISOString()
             }));
             this.broadcastStrategyChange('stopped', data.strategyId);
@@ -2781,12 +2882,34 @@ class FafnirBotAPI {
           }
           break;
 
-                case 'switch_strategy':
+        case 'switch_strategy':
           try {
-            const result = await this.switchStrategy(data.fromStrategy, data.toStrategy);
+            const walletAddress = (ws as any).walletAddress;
+            if (!walletAddress) {
+              ws.send(JSON.stringify({
+                type: 'error',
+                message: 'Wallet authentication required to switch strategy',
+                timestamp: new Date().toISOString()
+              }));
+              break;
+            }
+
+            // Stop current strategy first
+            await this.multiUserStrategyManager.stopUserStrategy(walletAddress);
+
+            // Start new strategy
+            const session = await this.multiUserStrategyManager.assignStrategy({
+              walletAddress,
+              strategy: data.toStrategy
+            });
+
             ws.send(JSON.stringify({
               type: 'strategy_result',
-              data: result,
+              data: {
+                success: true,
+                session,
+                message: `Switched from ${data.fromStrategy} to ${data.toStrategy}`
+              },
               timestamp: new Date().toISOString()
             }));
             this.broadcastStrategyChange('switched', data.toStrategy, data.fromStrategy);
@@ -2845,6 +2968,26 @@ class FafnirBotAPI {
               timestamp: new Date().toISOString()
             }));
           }
+          break;
+
+        case 'get_trade_history':
+          await this.handleTradeHistoryRequest(ws, data);
+          break;
+
+        case 'export_trade_history':
+          await this.handleTradeExportRequest(ws, data);
+          break;
+
+        case 'get_wallet_summary':
+          await this.handleWalletSummaryRequest(ws, data);
+          break;
+
+        case 'get_positions':
+          await this.handleGetPositionsRequest(ws, data);
+          break;
+
+        case 'subscribe_positions':
+          await this.handleSubscribePositionsRequest(ws, data);
           break;
 
         default:
@@ -2939,7 +3082,16 @@ class FafnirBotAPI {
       console.log(`   PUT  /api/config/:strategy - Update strategy configuration`);
       console.log(`   POST /api/config/reset - Reset to default configuration`);
       console.log(`   POST /api/config/apply - Apply configuration to containers`);
-      console.log(`🔐 Authentication Endpoints:`);
+      console.log(`� Trade History Endpoints:`);
+      console.log(`   GET  /api/exports/:filename - Download exported trade files`);
+      console.log(`   WebSocket: get_trade_history - Get filtered trade history`);
+      console.log(`   WebSocket: export_trade_history - Export trades to CSV/Excel/JSON`);
+      console.log(`   WebSocket: get_wallet_summary - Get wallet analytics summary`);
+      console.log(`🎯 Position Tracking Endpoints:`);
+      console.log(`   WebSocket: get_positions - Get current positions for wallet`);
+      console.log(`   WebSocket: subscribe_positions - Subscribe to real-time position updates`);
+      console.log(`   WebSocket: position_update - Real-time position change broadcasts`);
+      console.log(`�🔐 Authentication Endpoints:`);
       console.log(`   POST /api/auth/wallet - Authenticate with GalaChain wallet`);
       console.log(`   POST /api/auth/cross-chain - Authenticate with MetaMask (cross-chain)`);
       console.log(`   POST /api/auth/logout - Revoke session API key`);
@@ -3055,6 +3207,52 @@ class FafnirBotAPI {
     this.wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(message));
+      }
+    });
+  }
+
+  // Broadcast trade execution events to all connected clients
+  private async broadcastTradeExecution(tradeEvent: any): Promise<void> {
+    // Store trade in TradeDataService for persistent history
+    try {
+      if (tradeEvent.type === 'trade_execution' && tradeEvent.data) {
+        const trade = tradeEvent.data;
+
+        // Convert trade event to TradeRecord format
+        const tradeRecord = {
+          walletAddress: trade.walletAddress || trade.user || 'unknown',
+          strategy: trade.strategy || 'unknown',
+          action: trade.action as 'buy' | 'sell',
+          pair: trade.pair || `${trade.tokenIn}/${trade.tokenOut}`,
+          amount: parseFloat(trade.amount) || 0,
+          price: trade.price || '0',
+          status: trade.success ? 'success' as const : 'failed' as const,
+          transactionId: trade.transactionId,
+          transactionHash: trade.transactionHash,
+          galascanUrl: trade.galascanUrl,
+          timestamp: trade.timestamp || new Date().toISOString(),
+          profit: trade.profit,
+          fees: trade.fees,
+          slippage: trade.slippage
+        };
+
+        const storedTrade = await this.tradeDataService.storeTrade(tradeRecord);
+        console.log(`💾 Trade stored in TradeDataService: ${tradeRecord.action} ${tradeRecord.amount} ${tradeRecord.pair}`);
+
+        // Update position tracking for real-time position updates
+        if (tradeRecord.status === 'success') {
+          const position = this.positionTracker.updatePosition(storedTrade);
+          console.log(`🎯 Position updated for ${tradeRecord.walletAddress}: ${tradeRecord.pair} (Net: ${position?.netPosition || 0})`);
+        }
+      }
+    } catch (error) {
+      console.error('❌ Failed to store trade in TradeDataService:', error);
+    }
+
+    // Broadcast to WebSocket clients
+    this.wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(tradeEvent));
       }
     });
   }
@@ -3233,6 +3431,253 @@ class FafnirBotAPI {
       }
     } catch (error: any) {
       console.error('❌ Failed to load address mappings:', error);
+    }
+  }
+
+  // Trade history WebSocket handlers
+  private async handleTradeHistoryRequest(ws: WebSocket, data: any): Promise<void> {
+    try {
+      const walletAddress = (ws as any).walletAddress;
+
+      if (!walletAddress) {
+        ws.send(JSON.stringify({
+          type: 'error',
+          message: 'Wallet authentication required for trade history',
+          timestamp: new Date().toISOString()
+        }));
+        return;
+      }
+
+      // Get trade history using TradeDataService
+      const historyResponse = await this.tradeDataService.getTradeHistory({
+        walletAddress,
+        limit: data.limit || 100,
+        offset: data.offset || 0,
+        strategy: data.strategy,
+        action: data.action,
+        status: data.status,
+        dateFrom: data.dateFrom,
+        dateTo: data.dateTo,
+        sortBy: data.sortBy || 'timestamp',
+        sortOrder: data.sortOrder || 'desc'
+      });
+
+      ws.send(JSON.stringify({
+        type: 'trade_history_response',
+        data: {
+          ...historyResponse,
+          walletAddress,
+          requestFilters: {
+            limit: data.limit,
+            offset: data.offset,
+            strategy: data.strategy,
+            action: data.action,
+            status: data.status,
+            dateFrom: data.dateFrom,
+            dateTo: data.dateTo,
+            sortBy: data.sortBy,
+            sortOrder: data.sortOrder
+          }
+        },
+        timestamp: new Date().toISOString()
+      }));
+
+      console.log(`📊 Trade history sent to ${walletAddress}: ${historyResponse.trades.length} trades`);
+
+    } catch (error: any) {
+      console.error('❌ Trade history request error:', error);
+      ws.send(JSON.stringify({
+        type: 'error',
+        message: error.message,
+        timestamp: new Date().toISOString()
+      }));
+    }
+  }
+
+  private async handleTradeExportRequest(ws: WebSocket, data: any): Promise<void> {
+    try {
+      const walletAddress = (ws as any).walletAddress;
+
+      if (!walletAddress) {
+        ws.send(JSON.stringify({
+          type: 'error',
+          message: 'Wallet authentication required for trade export',
+          timestamp: new Date().toISOString()
+        }));
+        return;
+      }
+
+      // Export trades using TradeDataService
+      const exportResponse = await this.tradeDataService.exportTradeHistory({
+        walletAddress,
+        format: data.format || 'csv',
+        strategy: data.strategy,
+        dateFrom: data.dateFrom,
+        dateTo: data.dateTo,
+        includeAnalytics: data.includeAnalytics !== false
+      });
+
+      ws.send(JSON.stringify({
+        type: 'trade_export_response',
+        data: {
+          ...exportResponse,
+          walletAddress,
+          downloadUrl: `/api/exports/${exportResponse.filename}`,
+          requestFilters: {
+            format: data.format,
+            strategy: data.strategy,
+            dateFrom: data.dateFrom,
+            dateTo: data.dateTo,
+            includeAnalytics: data.includeAnalytics
+          }
+        },
+        timestamp: new Date().toISOString()
+      }));
+
+      console.log(`📤 Trade export prepared for ${walletAddress}: ${exportResponse.filename}`);
+
+    } catch (error: any) {
+      console.error('❌ Trade export request error:', error);
+      ws.send(JSON.stringify({
+        type: 'error',
+        message: error.message,
+        timestamp: new Date().toISOString()
+      }));
+    }
+  }
+
+  private async handleWalletSummaryRequest(ws: WebSocket, data: any): Promise<void> {
+    try {
+      const walletAddress = (ws as any).walletAddress;
+
+      if (!walletAddress) {
+        ws.send(JSON.stringify({
+          type: 'error',
+          message: 'Wallet authentication required for wallet summary',
+          timestamp: new Date().toISOString()
+        }));
+        return;
+      }
+
+      // Get wallet summary using TradeDataService
+      const summary = await this.tradeDataService.getWalletSummary(walletAddress);
+
+      ws.send(JSON.stringify({
+        type: 'wallet_summary_response',
+        data: {
+          ...summary,
+          walletAddress
+        },
+        timestamp: new Date().toISOString()
+      }));
+
+      console.log(`📈 Wallet summary sent to ${walletAddress}`);
+
+    } catch (error: any) {
+      console.error('❌ Wallet summary request error:', error);
+      ws.send(JSON.stringify({
+        type: 'error',
+        message: error.message,
+        timestamp: new Date().toISOString()
+      }));
+    }
+  }
+
+  /**
+   * Handle get positions request
+   */
+  private async handleGetPositionsRequest(ws: WebSocket, data: any): Promise<void> {
+    try {
+      const walletAddress = (ws as any).walletAddress;
+
+      if (!walletAddress) {
+        ws.send(JSON.stringify({
+          type: 'error',
+          message: 'Wallet authentication required for position data',
+          timestamp: new Date().toISOString()
+        }));
+        return;
+      }
+
+      // Get positions from position tracker
+      const positions = this.positionTracker.getPositions(
+        walletAddress,
+        data.strategy
+      );
+
+      const portfolioSummary = this.positionTracker.getPortfolioSummary(walletAddress);
+
+      ws.send(JSON.stringify({
+        type: 'positions_response',
+        data: {
+          ...portfolioSummary,
+          requestFilters: {
+            strategy: data.strategy,
+            pair: data.pair
+          }
+        },
+        timestamp: new Date().toISOString()
+      }));
+
+      console.log(`🎯 Positions data sent to ${walletAddress} (${positions.length} positions)`);
+
+    } catch (error: any) {
+      console.error('❌ Get positions request error:', error);
+      ws.send(JSON.stringify({
+        type: 'error',
+        message: error.message,
+        timestamp: new Date().toISOString()
+      }));
+    }
+  }
+
+  /**
+   * Handle subscribe to position updates
+   */
+  private async handleSubscribePositionsRequest(ws: WebSocket, data: any): Promise<void> {
+    try {
+      const walletAddress = (ws as any).walletAddress;
+
+      if (!walletAddress) {
+        ws.send(JSON.stringify({
+          type: 'error',
+          message: 'Wallet authentication required for position subscriptions',
+          timestamp: new Date().toISOString()
+        }));
+        return;
+      }
+
+      // Add to position tracker subscribers
+      this.positionTracker.subscribe(ws);
+
+      // Send current positions immediately
+      await this.handleGetPositionsRequest(ws, data);
+
+      // Confirm subscription
+      ws.send(JSON.stringify({
+        type: 'position_subscription_confirmed',
+        data: {
+          walletAddress,
+          message: 'Subscribed to real-time position updates'
+        },
+        timestamp: new Date().toISOString()
+      }));
+
+      console.log(`📡 Position subscription added for ${walletAddress}`);
+
+      // Handle unsubscribe on disconnect
+      ws.on('close', () => {
+        this.positionTracker.unsubscribe(ws);
+        console.log(`📡 Position subscription removed for ${walletAddress}`);
+      });
+
+    } catch (error: any) {
+      console.error('❌ Subscribe positions request error:', error);
+      ws.send(JSON.stringify({
+        type: 'error',
+        message: error.message,
+        timestamp: new Date().toISOString()
+      }));
     }
   }
 }
