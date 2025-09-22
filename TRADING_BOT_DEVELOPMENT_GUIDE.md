@@ -1911,5 +1911,3 @@ This guide provides a complete foundation for building a GalaSwap trading bot wi
 6. **📈 Scale**: Add more strategies and increase trade sizes
 
 The bot is designed to be **safe**, **extensible**, and **well-documented** - perfect for both learning GalaSwap development and building production trading systems! 🤖⚡
-
-
