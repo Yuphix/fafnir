@@ -1,5 +1,7 @@
 # 🔥 Fafnir Bot - GalaChain Arbitrage Bot
 
+<!-- Updated by AI agent -->
+
 A sophisticated arbitrage bot for the GalaChain DEX (gSwap) built with TypeScript and the official GalaChain SDK.
 
 ## 🚀 Features
