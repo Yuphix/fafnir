@@ -1,10 +1,8 @@
-import { config } from 'dotenv';
+import { config } from './config.js';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
-// Load environment variables
-config();
 
 // Get current directory for ES modules
 const __filename = fileURLToPath(import.meta.url);

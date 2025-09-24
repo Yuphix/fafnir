@@ -1,3 +1,4 @@
+<!-- Updated on 2025-09-24 -->
 # 🔥 Fafnir Bot - GalaChain Arbitrage Bot
 
 <!-- Updated by AI agent -->
@@ -81,3 +82,15 @@ This bot is for educational and personal use. Trading cryptocurrencies involves 
 ## 📄 License
 
 MIT License - see LICENSE file for details.
+
+---
+
+## 📜 Project Credits
+
+- **Development Team**: Fafnir Bot Contributors
+- **Special Thanks**: GalaChain Community
+
+## 🛠️ Version Info
+
+- **Current Version**: 1.0.0
+- **Last Updated**: 2025-09-24

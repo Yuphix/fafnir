@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import { config } from './config.js';
 import { galaSwapAuth } from './galachain-swap-auth.js';
 
 /**
