@@ -1,3 +1,4 @@
+<!-- Updated on 2025-09-24 -->
 # 🔥 Fafnir Bot - GalaChain Arbitrage Bot
 
 <!-- Updated by AI agent -->
