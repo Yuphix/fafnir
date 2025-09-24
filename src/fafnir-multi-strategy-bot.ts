@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import { config } from './config.js';
 import express, { Request, Response } from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -86,17 +86,7 @@ class MultiStrategyFafnirBot {
   }
 
   private loadConfig(): void {
-    this.config = {
-      enableMultiStrategy: process.env.ENABLE_MULTI_STRATEGY === 'true',
-      defaultStrategy: process.env.DEFAULT_STRATEGY || 'fafnir-treasure-hoarder',
-      strategySwitchInterval: parseInt(process.env.STRATEGY_SWITCH_INTERVAL_MS || '300000'),
-      enableStrategySwitching: process.env.ENABLE_STRATEGY_SWITCHING === 'true',
-      enableFrontendControl: process.env.ENABLE_FRONTEND_CONTROL === 'true',
-      availableStrategies: (process.env.AVAILABLE_STRATEGIES || 'arbitrage,triangular,fibonacci,liquidity-spider,enhanced-trend,fafnir-treasure-hoarder').split(','),
-      dryRun: process.env.DRY_RUN === 'true',
-      apiPort: parseInt(process.env.BOT_API_PORT || '3001'),
-      corsOrigins: (process.env.API_CORS_ORIGINS || 'http://localhost:3001,http://localhost:3000,https://yuphix.io').split(',')
-    };
+    this.config = config;
 
     this.currentStrategy = this.config.defaultStrategy;
   }

@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import { config } from './config.js';
 import fs from 'fs-extra';
 import path from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
@@ -58,14 +58,10 @@ const PRODUCTION_CONFIG = {
 
 // --- GalaSwap client ------------------------------------------------------
 // Initialize GSwap client for quotes and swap payloads
-const gatewayUrl = process.env.GSWAP_GATEWAY_URL || 'https://gateway-mainnet.galachain.com';
-const dexBackendUrl = process.env.GSWAP_DEX_BACKEND_URL || 'https://dex-backend-prod1.defi.gala.com';
-const bundlerUrl = process.env.GSWAP_BUNDLER_URL || 'https://bundle-backend-prod1.defi.gala.com';
-
 const gswap = new GSwap({
-  gatewayBaseUrl: gatewayUrl,
-  dexBackendBaseUrl: dexBackendUrl,
-  bundlerBaseUrl: bundlerUrl,
+  gatewayBaseUrl: config.gatewayUrl,
+  dexBackendBaseUrl: config.dexBackendUrl,
+  bundlerBaseUrl: config.bundlerUrl,
   dexContractBasePath: '/api/asset/dexv3-contract',
   tokenContractBasePath: '/api/asset/token-contract',
   bundlingAPIBasePath: '/bundle'
